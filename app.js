@@ -5,6 +5,7 @@ require('dotenv').config
 
 // importing router
 const indexRouter = require('./routes/index')
+
 const port = 3000
 
 // middleware definition

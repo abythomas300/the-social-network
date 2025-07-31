@@ -8,4 +8,8 @@ const homeController = require('../controllers/homeController')
 // route handlers
 router.get('/', homeController.welcomeMessage)
 
+
+
+
+// exporting router object
 module.exports = router
