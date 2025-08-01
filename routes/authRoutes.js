@@ -2,6 +2,10 @@
 const express = require('express')
 const router = express.Router()
 
+// importing contoller
+const authController = require('../controllers/authController')
+
+// route handlers
 router.get('/',)
 
 // exporting router object
