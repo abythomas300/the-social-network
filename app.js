@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 require('dotenv').config
 
-// importing router
+// importing routes
 const indexRouter = require('./routes/index')
 
 const port = 3000

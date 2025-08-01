@@ -2,6 +2,11 @@
 const express = require('express')
 const router = express.Router()
 
+// importing other routes
+const postRoutes = require('./postRoutes')
+const adminRoutes = require('./adminRoutes')
+const authRoutes = require('./authRoutes')
+
 // importing controllers
 const homeController = require('../controllers/homeController')
 
