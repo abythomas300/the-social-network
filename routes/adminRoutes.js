@@ -5,8 +5,8 @@ const router = express.Router()
 // importing controller
 const adminController = require('../controllers/adminController')
 
-// route handler
-router.get('/', )
+// route handlers
+
 
 // exporting router object
 module.exports = router

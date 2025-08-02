@@ -1,9 +1,9 @@
-function getAllUsers(req, res) {
-
+function getAllPostsForAdmin(req, res) {
+    
 }
 
-function getAllPostsForAdmin(req, res) {
-
+function getAllUsers(req, res) {
+    
 }
 
 function deleteUser(req, res) {

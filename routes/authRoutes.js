@@ -6,7 +6,7 @@ const router = express.Router()
 const authController = require('../controllers/authController')
 
 // route handlers
-router.get('/',)
+
 
 // exporting router object
 module.exports = router

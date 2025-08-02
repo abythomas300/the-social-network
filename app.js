@@ -4,12 +4,22 @@ const app = express()
 require('dotenv').config
 
 // importing routes
-const indexRouter = require('./routes/index')
+const postRouter = require('./routes/postRoutes')
+const adminRoutes = require('./routes/adminRoutes')
+const authRoutes = require('./routes/authRoutes')
+
+// importing homeController
+const homeController = require('./controllers/homeController')
 
 const port = 3000
 
 // middleware definition
-app.use('/', indexRouter)
+app.use('/post', postRouter)
+app.use('/admin', adminRoutes)
+app.use('/auth', authRoutes)
+
+// route handlers
+app.get('/', homeController.welcomeMessage)  // handling '/localhost:<port>/' GET request
 
 
 // starting server
