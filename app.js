@@ -18,7 +18,7 @@ const db_URI = process.env.MONGO_URI
 // middleware definition
 app.use('/post', postRouter)
 app.use('/admin', adminRoutes)
-app.use('/auth', authRoutes)
+app.use('/register', authRoutes)
 
 // route handlers
 app.get('/', homeController.welcomeMessage)  // handling '/localhost:<port>/' GET request

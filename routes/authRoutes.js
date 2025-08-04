@@ -6,6 +6,7 @@ const router = express.Router()
 const authController = require('../controllers/authController')
 
 // route handlers
+router.get('/', authController.displayRegistrationPage)
 
 
 // exporting router object
