@@ -8,6 +8,8 @@ const authController = require('../controllers/authController')
 // route handlers
 router.get('/', authController.displayRegistrationPage)
 router.post('/', authController.registerUser)
+router.post('/', authController.loginUser)
+
 
 // exporting router object
 module.exports = router
