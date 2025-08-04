@@ -24,8 +24,6 @@ app.use('/auth', authRoutes)
 app.get('/', homeController.welcomeMessage)  // handling '/localhost:<port>/' GET request
 
 
-console.log(port)
-console.log(db_URI)
 
 // connecting to database
 mongoose.connect(db_URI)
