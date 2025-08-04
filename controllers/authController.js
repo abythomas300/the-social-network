@@ -28,3 +28,48 @@ async function registerUser(req, res) {
 
 }
 
+// method to handle login user
+async function loginUser(req, res) {
+
+    try {
+        // getting user inserted credentials
+        const username = req.body.username
+        const password = req.body.password
+
+        // checking if a user with that 'username' exists
+        const user = await userModel.findOne({username: username}) // getting the first document with that username
+
+        if(user) {  // if such user exists
+
+            console.log("User found")
+            // comparing passwords
+            const isMatch = await bcrypt.compare(password, user.password)
+            if(isMatch) {
+                console.log("Passwords Match.")
+                res.send(`Welcome ${user.username} !`)
+            } else {
+                console.log("Passwords Does Not Match")
+                res.send("Wrong Password")
+            }
+
+        } else {
+            console.log("Cannot find user with that username")
+            res.send("Cannot find an account. Sign Up to create an account.")
+        }
+
+
+    }
+    catch(error) {
+        console.log("Login process failed, reason:", error)
+        res.send("Login Failed")
+    }
+
+}
+
+
+// exporting methods
+module.exports = {
+    displayRegistrationPage,
+    registerUser,
+    loginUser
+}
