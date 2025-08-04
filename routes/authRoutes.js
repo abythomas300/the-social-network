@@ -7,7 +7,7 @@ const authController = require('../controllers/authController')
 
 // route handlers
 router.get('/', authController.displayRegistrationPage)
-
+router.post('/', authController.registerUser)
 
 // exporting router object
 module.exports = router
