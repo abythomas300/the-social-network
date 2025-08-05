@@ -16,6 +16,8 @@ const port = process.env.PORT
 const db_URI = process.env.MONGO_URI
 
 // middleware definition
+app.use(express.json()) // to look for JSON data in incoming requests and parse it to javascript object notation
+
 app.use('/post', postRouter)
 app.use('/admin', adminRoutes)
 app.use('/register', authRoutes)
