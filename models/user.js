@@ -14,7 +14,10 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ['user', 'admin'], default: 'user'
-    }
+    },   
+},
+{
+    timestamps: true  // to automatically add created and updated time to db
 })
 
 // creating model object for 'user' related requests
