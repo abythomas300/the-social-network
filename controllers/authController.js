@@ -44,8 +44,22 @@ async function loginUser(req, res) {
             console.log("User found")
             // comparing passwords
             const isMatch = await bcrypt.compare(password, user.password)
+            
             if(isMatch) {
                 console.log("Passwords Match.")
+
+                // creating session 
+                req.session.user = {
+                    userId : user._id,
+                    username: user.username,
+                    role: user.role
+                }
+                console.log("- - - Session Created - - - ")
+                console.log("Session Details :-")
+                console.log(`User ID: ${req.session.user.userId}`)
+                console.log(`UserName: ${req.session.user.username}`)
+                console.log(`User's Role: ${req.session.user.role}`)
+
                 res.send(`Welcome ${user.username} !`)
             } else {
                 console.log("Passwords Does Not Match")
