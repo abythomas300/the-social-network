@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const mongoose = require('mongoose')
+const session = require('express-session')
 
 // importing routes
 const postRouter = require('./routes/postRoutes')
@@ -15,8 +16,17 @@ const homeController = require('./controllers/homeController')
 const port = process.env.PORT
 const db_URI = process.env.MONGO_URI
 
-// middleware definition
-app.use(express.json()) // to look for JSON data in incoming requests and parse it to javascript object notation
+// middleware definitions
+app.use(express.json()) // to look for JSON data in ALL incoming requests and parse it to javascript object notation
+
+app.use(session({    // express-session initialization (global middleware)
+    secret: process.env.SESSION_SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false
+    }
+}))
 
 app.use('/post', postRouter)
 app.use('/admin', adminRoutes)
