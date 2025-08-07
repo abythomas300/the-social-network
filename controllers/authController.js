@@ -80,10 +80,34 @@ async function loginUser(req, res) {
 
 }
 
+// method to handle user logout
+async function logoutUser(req, res){
+    try {
+        console.log("Session data about to be cleared")
+        console.log("Details :-")
+        console.log(`User ID: ${req.session.user.userId}`)
+        console.log(`UserName: ${req.session.user.username}`)
+        console.log(`User's Role: ${req.session.user.role}`)
+
+        req.session.destroy(function(error){  // req.session.destroy() is a CALLBACK based asynchronous method(not PROMISE based), so we cannot use await on this
+            if(error) {
+                console.log("Logout Failed, reason: ", error)
+            }else{
+                console.log("Logout Successful")
+                return res.send(`Logout successful`)
+            }
+        })
+
+    }catch(err){
+        console.log("Logout Error, reason: ", err)
+    }
+}
+
 
 // exporting methods
 module.exports = {
     displayRegistrationPage,
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 }
