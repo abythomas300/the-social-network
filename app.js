@@ -10,8 +10,9 @@ const postRouter = require('./routes/postRoutes')
 const adminRoutes = require('./routes/adminRoutes')
 const authRoutes = require('./routes/authRoutes')
 
-// importing homeController
+// importing necessary controllers
 const homeController = require('./controllers/homeController')
+const authController = require('./controllers/authController')
 
 const port = process.env.PORT
 const db_URI = process.env.MONGO_URI
@@ -28,12 +29,15 @@ app.use(session({    // express-session initialization (global middleware)
     }
 }))
 
-app.use('/post', postRouter)
+// (route specific middlwares)
+app.use('/post', postRouter) 
 app.use('/admin', adminRoutes)
 app.use('/register', authRoutes)
 
 // route handlers
 app.get('/', homeController.welcomeMessage)  // handling '/localhost:<port>/' GET request
+app.post('/login', authController.loginUser) // handling '/localhost:<port>/login' POST request
+app.post('/logout', authController.logoutUser) // handling '/localhost:<port>/logout' POST request
 
 
 
