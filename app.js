@@ -36,6 +36,7 @@ app.use('/register', authRoutes)
 
 // route handlers
 app.get('/', homeController.welcomeMessage)  // handling '/localhost:<port>/' GET request
+app.get('/login', homeController.loginPage)  // handling '/localhost:<post>/login' GET request
 app.post('/login', authController.loginUser) // handling '/localhost:<port>/login' POST request
 app.post('/logout', authController.logoutUser) // handling '/localhost:<port>/logout' POST request
 
