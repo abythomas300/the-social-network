@@ -6,7 +6,7 @@ const router = express.Router()
 const postController = require('../controllers/postController')
 
 // route handlers
-
+router.get('/', postController.getAllPosts)
 
 
 // exporting router object
