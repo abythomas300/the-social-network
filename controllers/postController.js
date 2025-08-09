@@ -15,7 +15,29 @@ async function getAllPosts(req, res){
 
 }
 
+async function createNewPost(req, res) {
+
+    try {
+        console.log("Create new post request detected")
+        console.log("Requested User Id", req.session.user.userId)
+        console.log("Requested User name", req.session.user.username)
+        console.log("Requested User role", req.session.user.userId)
+        const newPost = new postModel({title: req.body.title, content: req.body.content, author: req.session.user.userId})
+        console.log("Saving post to DB ...")
+        await newPost.save() // saving the post to 'posts' collection in DB
+        console.log("Post created Successfully")
+        res.send("Post created Successfully")
+    }
+    catch(error){
+        console.log("Post Creation Failed, reason: ", error)
+        res.send("Post Creation Failed")
+    }
+}
+
+
+
 // exporting all methods
 module.exports = {
-    getAllPosts
+    getAllPosts,
+    createNewPost
 }
