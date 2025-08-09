@@ -12,6 +12,9 @@ const isLoggedIn = require('../middlewares/isLoggedIn')
 // route handlers
 router.get('/', isLoggedIn, postController.getAllPosts)
 router.post('/', isLoggedIn, postController.createNewPost)
+router.delete('/', postController.deletePost)
+
+
 
 // exporting router object
 module.exports = router

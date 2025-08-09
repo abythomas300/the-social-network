@@ -35,9 +35,28 @@ async function createNewPost(req, res) {
 }
 
 
+async function deletePost(req, res) {
+    
+    try{
+        const postIdToRemove = req.body.postId;
+        console.log("Post delete request detected, Post id to delete: ", postIdToRemove)
+        const deletedPost = await postModel.findByIdAndDelete(postIdToRemove)
+        console.log("Post Deleted Successfully")
+        console.log("Post Details: ", deletedPost)
+        res.send("Post Deleted Successfully")
+    }
+    catch(error){
+        console.log("Post Deletion Failed, reason: ", error)
+        res.send("Post Deletion Failed.")
+    }
+
+}
+
+
 
 // exporting all methods
 module.exports = {
     getAllPosts,
-    createNewPost
+    createNewPost,
+    deletePost
 }
