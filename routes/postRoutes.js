@@ -3,16 +3,16 @@ const express = require('express')
 const router = express.Router()
 
 // importing middlewares
-const mid = require('../middlewares/isLoggedIn')
+const isLoggedIn = require('../middlewares/isLoggedIn')
 
 // importing contoller
 const postController = require('../controllers/postController')
-const isLoggedIn = require('../middlewares/isLoggedIn')
+
 
 // route handlers
 router.get('/', isLoggedIn, postController.getAllPosts)
 router.post('/', isLoggedIn, postController.createNewPost)
-router.delete('/', postController.deletePost)
+router.delete('/', isLoggedIn, postController.deletePost)
 
 
 
