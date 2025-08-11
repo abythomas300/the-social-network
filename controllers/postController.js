@@ -53,10 +53,28 @@ async function deletePost(req, res) {
 }
 
 
+async function updatePost(req, res) {
+
+    try{
+        const updateData = req.body
+        console.log("Post to be updated(id): ", req.params.id)
+        const updatedData = await postModel.findByIdAndUpdate(req.params.id, updateData, {new: true})
+        console.log("Post updated successfully, details: ", updateData)
+        res.send("Post Updated Successfully")
+    }
+    catch(error){
+        console.log("Post Updation Failed, reason: ", error)
+        res.send("Post Updation Failed")
+    }
+
+}
+
+
 
 // exporting all methods
 module.exports = {
     getAllPosts,
     createNewPost,
-    deletePost
+    deletePost,
+    updatePost
 }

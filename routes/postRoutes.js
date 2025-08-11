@@ -13,7 +13,7 @@ const postController = require('../controllers/postController')
 router.get('/', isLoggedIn, postController.getAllPosts)
 router.post('/', isLoggedIn, postController.createNewPost)
 router.delete('/', isLoggedIn, postController.deletePost)
-
+router.patch('/:id', postController.updatePost)
 
 
 // exporting router object
