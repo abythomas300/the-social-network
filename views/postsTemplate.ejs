@@ -7,13 +7,22 @@
 </head>
 <body>
 
+    <!--Helper function to convert date from YYYY-MM-DD to DD-MM-YYYY -->
+    <%
+        function dateConversion(dateInYMD){
+            const parts = dateInYMD.split('-')
+            const dateInDMY = `${parts[2]}-${parts[1]}-${parts[0]}`
+            return dateInDMY;
+        }
+    %>
+
     <%if(posts.length > 0) {%>
         <h2><u>All Posts</u></h2>
         <ul>
             <%posts.forEach(function(post){%>
                 <li>
                     <h3><%=post.title%></h3>
-                    <p>Posted by <%=post.author%></p>
+                    <p>Posted by <%=post.author%> on <%= dateConversion(post.createdAt.toISOString().substring(0,10))%></p>
                     <p><%=post.content%></p>
                 </li>
             <%})%>
