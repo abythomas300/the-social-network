@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const user = require('./user')
 
 // defining schema for 'posts' collection in DB
 const postSchema = new mongoose.Schema({
@@ -12,7 +13,7 @@ const postSchema = new mongoose.Schema({
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: user  // refering to the user model
     }
 },{
     timestamps: true
