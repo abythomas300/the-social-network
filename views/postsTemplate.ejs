@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed</title>
+</head>
+<body>
+
+    <%if(posts.length > 0) {%>
+        <h2><u>All Posts</u></h2>
+        <ul>
+            <%posts.forEach(function(post){%>
+                <li>
+                    <h3><%=post.title%></h3>
+                    <p>Posted by <%=post.author%></p>
+                    <p><%=post.content%></p>
+                </li>
+            <%})%>
+        </ul>
+    <%} else {%>
+        <h3>No new posts available.</h3>
+    <%}%>
+</body>
+</html>

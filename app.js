@@ -29,6 +29,9 @@ app.use(session({    // express-session initialization (global middleware)
     }
 }))
 
+// setting template engine engine
+app.set('view engine', 'ejs')
+
 // (route specific middlwares)
 app.use('/post', postRouter) 
 app.use('/admin', adminRoutes)
