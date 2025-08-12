@@ -16,14 +16,15 @@
         }
     %>
 
+    <!--Template for displaying all blog posts -->
     <%if(posts.length > 0) {%>
         <h2><u>All Posts</u></h2>
         <ul>
             <%posts.forEach(function(post){%>
                 <li>
                     <h3><%=post.title%></h3>
-                    <p>Posted by <%=post.author%> on <%= dateConversion(post.createdAt.toISOString().substring(0,10))%></p>
-                    <p><%=post.content%></p>
+                    <i><p>Posted by <%=post.author.username%> on <%= dateConversion(post.createdAt.toISOString().substring(0,10))%></p></i>
+                    <p><b><%=post.content%></b></p>
                 </li>
             <%})%>
         </ul>
