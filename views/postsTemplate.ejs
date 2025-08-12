@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feed</title>
+    <title>My Feed</title>
 </head>
 <body>
+ 
+    <!-- Importing Header -->
+    <%- include('partials/_header') %>
 
     <!--Helper function to convert date from YYYY-MM-DD to DD-MM-YYYY -->
     <%
@@ -18,19 +21,20 @@
 
     <!--Template for displaying all blog posts -->
     <%if(posts.length > 0) {%>
+
         <h2 style="text-align: center; margin: 30px"><u>All Posts</u></h2>
-        <!-- <ul> -->
             <%posts.forEach(function(post){%>
-                <!-- <li> -->
                     <h3><%=post.title%></h3>
                     <i><p>Posted by <%=post.author.username%> on <%= dateConversion(post.createdAt.toISOString().substring(0,10))%></p></i>
                     <p><b><%=post.content%></b></p>
-                    <hr style="margin: 40px 0">
-                <!-- </li> -->
+                    <hr style="margin: 40px">
             <%})%>
-        <!-- </ul> -->
+
     <%} else {%>
+
         <h3>No new posts available.</h3>
+
     <%}%>
+    
 </body>
 </html>
