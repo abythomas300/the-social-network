@@ -18,16 +18,17 @@
 
     <!--Template for displaying all blog posts -->
     <%if(posts.length > 0) {%>
-        <h2><u>All Posts</u></h2>
-        <ul>
+        <h2 style="text-align: center; margin: 30px"><u>All Posts</u></h2>
+        <!-- <ul> -->
             <%posts.forEach(function(post){%>
-                <li>
+                <!-- <li> -->
                     <h3><%=post.title%></h3>
                     <i><p>Posted by <%=post.author.username%> on <%= dateConversion(post.createdAt.toISOString().substring(0,10))%></p></i>
                     <p><b><%=post.content%></b></p>
-                </li>
+                    <hr style="margin: 40px 0">
+                <!-- </li> -->
             <%})%>
-        </ul>
+        <!-- </ul> -->
     <%} else {%>
         <h3>No new posts available.</h3>
     <%}%>
