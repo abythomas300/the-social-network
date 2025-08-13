@@ -19,17 +19,28 @@
     <!--Template for displaying all blog posts -->
     <%if(posts.length > 0) {%>
 
-        <h2 style="text-align: center; margin: 30px"><u>All Posts</u></h2>
             <%posts.forEach(function(post){%>
-                    <h3><%=post.title%></h3>
-                    <i><p>Posted by <%=post.author.username%> on <%= dateConversion(post.createdAt.toISOString().substring(0,10))%></p></i>
-                    <p><b><%=post.content%></b></p>
-                    <hr style="margin: 40px">
+                    
+                <div class="container my-5">
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <h4 class="display-4 text-center mb-4"><%= post.title %></h4>
+                            <p class="text-muted text-center mb-4">Posted by <span class="fst-italic fw-bold"><%= post.author.username %></span> on <%= dateConversion(post.createdAt.toISOString().substring(0,10)) %></p>
+                            <div class="content">
+                                <p><%= post.content %></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="hr">
+
             <%})%>
 
     <%} else {%>
 
-        <h3>No new posts available.</h3>
+        <div class="container my-5">
+            <h4 class="display-4 text-center mb-4">No new posts for now</h4>
+        </div>
 
     <%}%>
     
