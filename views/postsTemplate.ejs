@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Feed</title>
-</head>
+<%- include('partials/_head') %>
 <body>
  
-    <!-- Importing Header -->
     <%- include('partials/_header') %>
+    
+    <%- include('partials/_navbar') %>
 
     <!--Helper function to convert date from YYYY-MM-DD to DD-MM-YYYY -->
     <%
@@ -36,5 +33,6 @@
 
     <%}%>
     
+    <%- include('partials/_footer') %>
 </body>
 </html>
