@@ -60,7 +60,8 @@ async function loginUser(req, res) {
                 console.log(`UserName: ${req.session.user.username}`)
                 console.log(`User's Role: ${req.session.user.role}`)
 
-                res.send(`Welcome ${user.username} !`)
+                // res.send(`Welcome ${user.username} !`)
+                res.redirect('/post')
             } else {
                 console.log("Passwords Does Not Match")
                 res.send("Wrong Password")
