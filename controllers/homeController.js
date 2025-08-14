@@ -4,7 +4,7 @@ function welcomeMessage(req, res){
 }
 
 function loginPage(req, res) {
-    res.send('<h3 style="text-align:center; font-size: 2.5em; color:blue"><i>The Social Network</i></h3> <h2><u>Login Page</u></h2>')
+    res.render('loginPage')
 }
 
 
