@@ -18,7 +18,8 @@ const port = process.env.PORT
 const db_URI = process.env.MONGO_URI
 
 // middleware definitions
-app.use(express.json()) // to look for JSON data in ALL incoming requests and parse it to javascript object notation
+app.use(express.json())        // to look for JSON data in ALL incoming requests and parse it to javascript object notation
+app.use(express.urlencoded()) // to look for application/x-www-form-urlencoded data in ALL incoming requests and parse it to javascript object notation
 
 app.use(session({    // express-session initialization (global middleware)
     secret: process.env.SESSION_SECRET_KEY,
