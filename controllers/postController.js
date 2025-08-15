@@ -16,6 +16,13 @@ async function getAllPosts(req, res){
 }
 
 
+function showBlogCreationPage(req, res) {
+
+    res.render('createBlogPage')
+
+}
+
+
 async function createNewPost(req, res) {
 
     try {
@@ -77,5 +84,6 @@ module.exports = {
     getAllPosts,
     createNewPost,
     deletePost,
-    updatePost
+    updatePost,
+    showBlogCreationPage
 }
