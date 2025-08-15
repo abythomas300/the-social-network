@@ -34,7 +34,7 @@ async function createNewPost(req, res) {
         console.log("Saving post to DB ...")
         await newPost.save() // saving the post to 'posts' collection in DB
         console.log("Post created Successfully")
-        res.send("Post created Successfully")
+        res.redirect('/post')  // redirecting user to blogs page after creating a post
     }
     catch(error){
         console.log("Post Creation Failed, reason: ", error)
