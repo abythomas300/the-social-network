@@ -17,17 +17,28 @@
     %>
 
     <!--Template for displaying all blog posts -->
-    <%if(posts.length > 0) {%>
+    
+    <%if(data.message.length > 0) {%>
 
-            <%posts.forEach(function(post){%>
+        <div class="alert alert-success fade show d-flex align-items-center justify-content-center gap-3" role="alert">
+            <%= data.message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" ></button>
+          </div>
+
+    <%}%>
+
+
+    <%if(data.blogs.length > 0) {%>
+
+            <%data.blogs.forEach(function(blog){%>
                     
                 <div class="container my-5">
                     <div class="row">
                         <div class="col-md-8 offset-md-2">
-                            <h4 class="display-4 text-center mb-4"><%= post.title %></h4>
-                            <p class="text-muted text-center mb-4">Posted by <span class="fst-italic fw-bold"><%= post.author.username %></span> on <%= dateConversion(post.createdAt.toISOString().substring(0,10)) %></p>
+                            <h4 class="display-4 text-center mb-4"><%= blog.title %></h4>
+                            <p class="text-muted text-center mb-4">Posted by <span class="fst-italic fw-bold"><%= blog.author.username %></span> on <%= dateConversion(blog.createdAt.toISOString().substring(0,10)) %></p>
                             <div class="content">
-                                <p><%= post.content %></p>
+                                <p><%= blog.content %></p>
                             </div>
                         </div>
                     </div>
@@ -45,5 +56,7 @@
     <%}%>
     
     <%- include('partials/_footer') %>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

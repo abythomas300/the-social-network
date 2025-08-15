@@ -10,7 +10,13 @@ async function getAllPosts(req, res){
     if(allPosts.length === 0){  // if there is no data in DB (ie. 'allPosts' is empty)
         res.send('<h3 style="text-align:center; font-size: 2.5em; color:blue"><i>The Social Network</i></h3> <p>All posts will appear here, no new posts for now. </p>')
     } else {
-        res.render('postsTemplate', {posts: allPosts})
+        const successMessage = req.flash('success')  
+        console.log("Flash message (success) in postController: ", successMessage)
+        const data = {    // combining data fetched from DB and flash message into one single object so that it can be passed to view
+            message: successMessage,
+            blogs: allPosts
+        }
+        res.render('postsTemplate', {data: data})
     }
 
 }

@@ -4,6 +4,7 @@ const app = express()
 require('dotenv').config()
 const mongoose = require('mongoose')
 const session = require('express-session')
+const flash = require('connect-flash')
 
 // importing routes
 const postRouter = require('./routes/postRoutes')
@@ -29,6 +30,8 @@ app.use(session({    // express-session initialization (global middleware)
         secure: false
     }
 }))
+
+app.use(flash())  //'connect-flash' for flash messages
 
 // setting template engine engine
 app.set('view engine', 'ejs')
