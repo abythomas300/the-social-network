@@ -88,6 +88,15 @@
 
 <body>
 
+    <%if(message.length > 0){%>
+        <div class="alert alert-success fade show d-flex align-items-center justify-content-center gap-3" role="alert">
+            <%= message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" ></button>
+        </div>
+    <%}%>
+
+
+
     <!-- Split Screen Layout -->
     <div class="split-screen">
         <!-- Left Side: Logo/Text -->

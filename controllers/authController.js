@@ -19,6 +19,8 @@ async function registerUser(req, res) {
         const hashString = await bcrypt.hash(password, 10)   
         const newUser = new userModel({username: username, password: hashString}) // creating user model object
         await newUser.save()  // passing user model object to mongoose to create new document in DB
+        console.log('Registraton Successful')
+        req.flash('success', 'Registration Successful')
         res.redirect('/login')  // redirecting users to login pagefea
     }
     catch(error){

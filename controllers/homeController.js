@@ -4,7 +4,9 @@ function welcomeMessage(req, res){
 }
 
 function loginPage(req, res) {
-    res.render('loginPage')
+    const successMessage = req.flash('success')
+    console.log("Flash Message: ", successMessage)
+    res.render('loginPage', {message: successMessage})
 }
 
 
