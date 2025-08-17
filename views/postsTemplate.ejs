@@ -2,32 +2,31 @@
 <html lang="en">
 <%- include('partials/_head') %>
 <body>
- 
-    <%- include('partials/_header') %>
-    
-    <%- include('partials/_navbar') %>
 
-    <!--Helper function to convert date from YYYY-MM-DD to DD-MM-YYYY -->
-    <%
-        function dateConversion(dateInYMD){
-            const parts = dateInYMD.split('-')
-            const dateInDMY = `${parts[2]}-${parts[1]}-${parts[0]}`
-            return dateInDMY;
-        }
-    %>
+    <!-- Helper function to convert date from YYYY-MM-DD to DD-MM-YYYY -->
+    <% function dateConversion(dateInYMD){
+        const parts = dateInYMD.split('-')
+        const dateInDMY = `${parts[2]}-${parts[1]}-${parts[0]}`
+        return dateInDMY;
+    }%>
 
-    <!--Template for displaying all blog posts -->
-    
     <%if(data.message.length > 0) {%>
 
-        <div class="alert alert-success fade show d-flex align-items-center justify-content-center gap-3" role="alert">
+        <div class="alert alert-success fade show d-flex align-items-center justify-content-center gap-3" style="position: absolute;z-index: 2;"  role="alert">
             <%= data.message %>
             <button type="button" class="btn-close" data-bs-dismiss="alert" ></button>
           </div>
 
     <%}%>
 
+    <%- include('partials/_header') %>
+    
+    <%- include('partials/_navbar') %>
 
+    
+
+    <!--Template for displaying all blog posts -->
+    
     <%if(data.blogs.length > 0) {%>
 
             <%data.blogs.forEach(function(blog){%>
