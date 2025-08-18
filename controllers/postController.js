@@ -53,7 +53,7 @@ async function createNewPost(req, res) {
 async function deletePost(req, res) {
     
     try{
-        const postIdToRemove = req.body.postId;
+        const postIdToRemove = req.params.blogId;
         console.log("Post delete request detected, Post id to delete: ", postIdToRemove)
         const deletedPost = await postModel.findByIdAndDelete(postIdToRemove)
         console.log("Post Deleted Successfully")
