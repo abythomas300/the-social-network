@@ -58,7 +58,8 @@ async function deletePost(req, res) {
         const deletedPost = await postModel.findByIdAndDelete(postIdToRemove)
         console.log("Post Deleted Successfully")
         console.log("Post Details: ", deletedPost)
-        res.send("Post Deleted Successfully")
+        req.flash('success', 'Blog post deleted successfully')
+        res.redirect('/post')
     }
     catch(error){
         console.log("Post Deletion Failed, reason: ", error)
