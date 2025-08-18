@@ -19,6 +19,8 @@
             height: 100vh;
             justify-content: center;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         /* Left side: "The Social Network" branding */
@@ -95,6 +97,13 @@
 </head>
 
 <body>
+
+    <%if(message.length > 0){%>
+        <div class="alert alert-success fade show d-flex align-items-center justify-content-center gap-3" role="alert" style="position: absolute; z-index: 2;">
+            <%= message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" ></button>
+        </div>
+    <%}%>
 
     <!-- Split Screen Layout -->
     <div class="split-screen">

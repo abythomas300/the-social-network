@@ -12,8 +12,18 @@
                 <a class="nav-link" href="/post/newblog">Create New Blog</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout</a>
+                <form action="/logout" method="post" id="logout-form">
+                    <a class="nav-link" href="#" onclick="submitLogoutForm()">Logout</a>
+                </form>
             </li>
         </ul>
     </div>
 </nav>
+
+
+
+<script>
+    function submitLogoutForm(){
+        document.getElementById("logout-form").submit()
+    }
+</script>

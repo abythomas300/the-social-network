@@ -96,8 +96,7 @@ async function logoutUser(req, res){
             if(error) {
                 console.log("Logout Failed, reason: ", error)
             }else{
-                console.log("Logout Successful")
-                return res.send(`Logout successful`)
+                res.redirect('/?message=loggedout' )  // sending logout indicator as a query parameter as req.flas() does not work (req.flash() need session but session is already would get deleted here.)
             }
         })
 
