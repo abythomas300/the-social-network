@@ -69,8 +69,20 @@ async function deletePost(req, res) {
 }
 
 
-function showBlogEditPage(req, res) {
-    res.render('editBlogPage')
+async function showBlogEditPage(req, res) {
+
+    try{
+        const blogIdToDelete = req.params.blogId
+        console.log("Blog Id: ", blogIdToDelete)
+        const entireBlog = await postModel.findById(blogIdToDelete)
+        console.log("The Entire Blog to be updated--> ", entireBlog)
+        res.render('editBlogPage', {previousBlog: entireBlog})
+
+    }catch(error){
+        console.log("Error showing blog edit page, reason: ", error)
+        res.send("Error displaying blog edit page")
+    }
+
 }
 
 

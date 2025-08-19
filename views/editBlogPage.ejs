@@ -46,12 +46,12 @@
               <h2 class="text-center mb-5 fw-bold fst-italic">Edit Your Blog </h2>
               <form action="/post" method="post">
                 <div class="mb-4">
-                  <p>Title</p>
-                  <input type="text" class="form-control" id="blogName" name="title"  placeholder="">
+                  <p class="fw-semibold">Title</p>
+                  <input type="text" class="form-control" id="blogName" name="title" value="<%=previousBlog.title%>">
                 </div>
                 <div class="mb-5">
-                  <p>Content</p>
-                  <textarea class="form-control" id="blogContent" name="content"  rows="6" placeholder=""></textarea>
+                  <p class="fw-semibold">Content</p>
+                  <textarea class="form-control" id="blogContent" name="content"  rows="6"><%=previousBlog.content%></textarea>
                 </div>
                 <div class="d-grid gap-2">
                   <button type="submit" class="btn btn-primary ">Save Changes</button>
