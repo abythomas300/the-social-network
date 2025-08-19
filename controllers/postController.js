@@ -12,9 +12,11 @@ async function getAllPosts(req, res){
     } else {
         const successMessage = req.flash('success')  
         console.log("Flash message (success) in postController: ", successMessage)
+
         const data = {    // combining data fetched from DB and flash message into one single object so that it can be passed to view
             message: successMessage,
-            blogs: allPosts
+            blogs: allPosts,
+            currentUser: req.session.user
         }
         res.render('postsTemplate', {data: data})
     }
