@@ -92,13 +92,23 @@ async function showBlogEditPage(req, res) {
 async function updatePost(req, res) {
 
     try{
+        
         const newData = req.body
-        console.log("Post to be updated(id): ", req.params.blogId)
-        console.log("New content", newData)
-        const updatedData = await postModel.findByIdAndUpdate(req.params.blogId, newData, {new: true})
-        console.log("Post updated successfully, details: ", updatedData)
-        req.flash('success', 'Blog post updated successfully')
-        res.redirect('/post')
+        const previousData = await postModel.findById(req.params.blogId)
+        console.log("Previous Data...", previousData)
+
+        // checking whether current user is the author of the blog
+        if(previousData.author._id.toString() === req.session.user.userId) {
+            const updatedData = await postModel.findByIdAndUpdate(req.params.blogId, newData, {new: true})
+            console.log("Data Updated")
+            console.log("Printing Updated Data ", updatedData)
+            req.flash('success', 'Blog post updated successfully')
+            res.redirect('/post')
+        } else {
+            console.log("Current user id and Blog author id does not match")
+            res.send("Cannot edit someone else's blog post")
+        }
+
     }
     catch(error){
         console.log("Post Updation Failed, reason: ", error)
