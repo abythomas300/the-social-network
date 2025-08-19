@@ -45,7 +45,7 @@
             <div class="card p-4">
               <h2 class="text-center mb-5 fw-bold fst-italic">Edit Your Blog </h2>
               <!-- BLOG UPDATE FORM -->
-              <form action="/post" method="post" id="blogUpdateForm">
+              <form action="/post/<%=previousBlog._id%>?_method=PATCH" method="post" id="blogUpdateForm">
                 <div class="mb-4">
                   <p class="fw-semibold">Title</p>
                   <input type="text" class="form-control" id="blogName" name="title" value="<%=previousBlog.title%>">

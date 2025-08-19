@@ -90,11 +90,13 @@ async function showBlogEditPage(req, res) {
 async function updatePost(req, res) {
 
     try{
-        const updateData = req.body
-        console.log("Post to be updated(id): ", req.params.id)
-        const updatedData = await postModel.findByIdAndUpdate(req.params.id, updateData, {new: true})
-        console.log("Post updated successfully, details: ", updateData)
-        res.send("Post Updated Successfully")
+        const newData = req.body
+        console.log("Post to be updated(id): ", req.params.blogId)
+        console.log("New content", newData)
+        const updatedData = await postModel.findByIdAndUpdate(req.params.blogId, newData, {new: true})
+        console.log("Post updated successfully, details: ", updatedData)
+        req.flash('success', 'Blog post updated successfully')
+        res.redirect('/post')
     }
     catch(error){
         console.log("Post Updation Failed, reason: ", error)
