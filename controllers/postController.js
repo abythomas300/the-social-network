@@ -57,11 +57,22 @@ async function deletePost(req, res) {
     try{
         const postIdToRemove = req.params.blogId;
         console.log("Post delete request detected, Post id to delete: ", postIdToRemove)
-        const deletedPost = await postModel.findByIdAndDelete(postIdToRemove)
-        console.log("Post Deleted Successfully")
-        console.log("Post Details: ", deletedPost)
-        req.flash('success', 'Blog post deleted successfully')
-        res.redirect('/post')
+        const originalBlog = await postModel.findById(req.params.blogId)
+
+        // checking whether current user is the author of the blog
+        if(originalBlog.author._id.toString() === req.session.user.userId) {
+
+            console.log("Current user id and Blog author id does not match ")
+            const deletedPost = await postModel.findByIdAndDelete(postIdToRemove)
+            console.log("Deleted Blog Details:", deletedPost)
+            req.flash('success', 'Blog post deleted successfully')
+            res.redirect('/post')
+
+        }else{
+            console.log("Current user id and Blog author id does not match")
+            res.send("You cannot delete someone else's post")
+        }
+        
     }
     catch(error){
         console.log("Post Deletion Failed, reason: ", error)
