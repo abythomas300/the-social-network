@@ -69,6 +69,12 @@ async function deletePost(req, res) {
 }
 
 
+function editPostPage(req, res) {
+    res.render('editBlogPage')
+}
+
+
+
 async function updatePost(req, res) {
 
     try{
@@ -92,6 +98,7 @@ module.exports = {
     getAllPosts,
     createNewPost,
     deletePost,
+    editPostPage,
     updatePost,
     showBlogCreationPage
 }

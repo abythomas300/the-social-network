@@ -14,6 +14,7 @@ router.get('/', isLoggedIn, postController.getAllPosts)
 router.get('/newblog', isLoggedIn, postController.showBlogCreationPage)
 router.post('/', isLoggedIn, postController.createNewPost)
 router.delete('/:blogId', isLoggedIn, postController.deletePost)
+router.get('/:blogId/editBlog', postController.editPostPage )
 router.patch('/:id', isLoggedIn, postController.updatePost)
 
 
