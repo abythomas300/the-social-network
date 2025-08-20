@@ -1,0 +1,18 @@
+<nav class="navbar navbar-dark bg-danger navbar-expand-lg justify-content-center">
+    <!-- <a class="navbar-brand" href="#">The Social Network (Logo)</a>  -->
+    <div class="navbar-collapse justify-content-center" id="navbarNavDropdown">
+        <ul class="navbar-nav d-flex w-100 justify-content-evenly">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/blogInfo">Blogs Info</a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/userInfo">User Info</a>
+            </li>
+            <li class="nav-item">
+                <form action="/logout" method="post" id="logout-form">
+                    <a class="nav-link" href="#" onclick="submitLogoutForm()">Logout</a>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>

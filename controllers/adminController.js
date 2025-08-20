@@ -1,24 +1,28 @@
-function getAllPostsForAdmin(req, res) {
+function displayAdminHomepage(req, res) {
+
+    res.render('homepage_admin')
+
+}
+
+function displayAllBlogs(req, res) {
     
-}
-
-function getAllUsers(req, res) {
-    
-}
-
-function deleteUser(req, res) {
+    res.render('blogsListPage_admin')
 
 }
 
-function deletePostByAdmin(req, res) {
+function displayUsersList(req, res) {
+
+    res.render('usersListPage_admin')
 
 }
+
+
+
 
 
 // exporting methods
 module.exports = {
-    getAllUsers,
-    getAllPostsForAdmin,
-    deleteUser,
-    deletePostByAdmin
+    displayAdminHomepage, 
+    displayUsersList,
+    displayAllBlogs
 }
