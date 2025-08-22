@@ -39,7 +39,7 @@ async function createNewPost(req, res) {
         console.log("Requested User Id", req.session.user.userId)
         console.log("Requested User name", req.session.user.username)
         console.log("Requested User role", req.session.user.userId)
-        const newPost = new postModel({title: req.body.title, content: req.body.content, author: req.session.user.userId})
+        const newPost = new postModel({title: req.body.title, content: req.body.content, author: req.session.user.userId, thumbnail: req.file.filename})
         console.log("Saving post to DB ...")
         await newPost.save() // saving the post to 'posts' collection in DB
         console.log("Post created Successfully")
