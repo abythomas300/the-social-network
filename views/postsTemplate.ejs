@@ -1,6 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('partials/_head') %>
+<style>
+    .blog-container {
+        padding: 2rem 0;
+    }
+
+    .blog-image {
+        /* Ensures the image fills its container and is responsive */
+        width: 100%;
+        height: auto;
+        max-height: 500px; /* Optional: Set a max height for larger screens */
+        object-fit: cover; /* Ensures the image aspect ratio is maintained and it covers the space */
+        border-radius: 4px; /* Optional: Add rounded corners to the image */
+    }
+    
+    .blog-content {
+        padding: 2rem;
+    }
+
+    /* Add custom spacing between the columns on large screens */
+    @media (min-width: 992px) {
+        .blog-image-col {
+            padding-right: 1rem;
+        }
+        .blog-text-col {
+            padding-left: 1rem;
+        }
+    }
+
+    .button-section {
+        display: flex;
+        gap: 0.5rem; /* Adds space between the buttons */
+        flex-wrap: wrap; /* Allows buttons to wrap to the next line on small screens */
+        padding: 1rem 0;
+        border-top: 1px solid #e9ecef; /* A subtle line to separate from content */
+        margin-top: 2rem;
+    }
+
+    .button-section .btn {
+        font-size: 1.25rem; /* Larger icon size */
+        padding: 0.5rem 0.75rem;
+    }
+</style>
 <body>
 
 
@@ -36,34 +78,38 @@
 
             <%data.blogs.forEach(function(blog){%>
                     
-                <div class="container my-5">
+                <div class="container blog-container">
                     <div class="row">
-                        <div class="col-md-8 offset-md-2">
-                            <h4 class="display-4 text-center mb-4"><%= blog.title %></h4>
-                            <p class="text-muted text-center mb-4">Posted by <span class="fst-italic fw-bold"><%= blog.author.username %></span> on <%= dateConversion(blog.createdAt.toISOString().substring(0,10)) %></p>
-                            <div class="content">
-                                <p><%= blog.content %></p>
+                
+                        <!-- Image column -->
+                        <div class="col-lg-6 blog-image-col mt-5">
+                            <img src="" alt="Mastering The Art Of Public Speaking" class="img-fluid blog-image">
+                        </div>
+                
+                        <!-- Text content column -->
+                        <div class="col-lg-6 blog-text-col">
+                            <div class="blog-content">
+                                <h1 class="display-5 fw-bold lh-2"><%= blog.title %></h1>
+                                <p class="lead mt-4"><%= blog.content %></p>
+                                <p class="text-muted medium mt-4">Posted by <span class="fst-italic fw-semibold mx-1"> <%= blog.author.username %> </span> on <%= dateConversion(blog.createdAt.toISOString().substring(0,10)) %></p>
+                                <!-- Option Buttons -->
+                                <div class="button-section mx-2">
+                                    <button class="btn btn-outline-primary btn-sm"><i class="bi bi-heart"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
+                                    <button class="btn btn-outline-primary btn-sm"><i class="bi bi-chat-left-dots"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
+
+                                    <!-- Checking whether author of a blog is logged in  -->
+                                    <%if(data.currentUser.userId === blog.author._id.toString()){%>
+                                        <a href="/post/editBlog/<%=blog._id%>"><button class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i></button></a>
+                                        <button class="btn btn-outline-primary" onclick="submitDeleteForm('<%=blog._id%>')"><i class="bi bi-trash3"></i></button>
+                                    <%}%>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="container mb-5">
-                    <div class="row">
-                        <div class="col-md-8 offset-md-2 ">
-                            <button class="btn btn-outline-primary btn-sm"><i class="bi bi-heart"><span style="font-style: normal; font-size: large;"> 0</span></i></button>
-                            <button class="btn btn-outline-primary btn-sm"><i class="bi bi-chat-left-dots"><span style="font-style: normal; font-size: large;"> 0</span></i></button>
-                    
-                            <!-- Checking if the blog is owned by the currently logged in user -->
-                            <%if(data.currentUser.userId === blog.author._id.toString()){%>
-                                <a href="/post/editBlog/<%=blog._id%>"><button class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i></a></button></a>
-                                <button class="btn btn-outline-primary" onclick="submitDeleteForm('<%=blog._id%>')"><i class="bi bi-trash3"></i></button>
-                            <%}%>
-                            
-                            <button class="btn btn-outline-primary"><i class="bi bi-three-dots"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <hr class="hr">
+                </div>             
+
+            <hr class="hr">
 
             <%})%>
 
