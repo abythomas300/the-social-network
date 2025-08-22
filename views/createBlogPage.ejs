@@ -44,12 +44,16 @@
       <div class="col-md-8 col-lg-6">
         <div class="card p-4">
           <h2 class="text-center mb-5 fw-bold fst-italic">Create a Blog </h2>
-          <form action="/post" method="post">
+          <form action="/post" method="post" enctype="multipart/form-data">
             <div class="mb-4">
               <input type="text" class="form-control" id="blogName" name="title"  placeholder="Add a title for your blog here" required>
             </div>
-            <div class="mb-5">
+            <div class="mb-4">
               <textarea class="form-control" id="blogContent" name="content"  rows="6" placeholder="What's is on your mind ?" required></textarea>
+            </div>
+            <div class="mb-5">
+              <p class="mb-2 text-muted">Upload thumbnail for your blog (image format only)</p>
+              <input type="file"  class="form-control" id="imageUpload" name="blogThumbail" required>
             </div>
             <div class="d-grid gap-2">
               <button type="submit" class="btn btn-primary ">Upload</button>
