@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const session = require('express-session')
 const flash = require('connect-flash')
 const methodOverride = require('method-override')
+const path = require('path')
 
 // importing routes
 const postRouter = require('./routes/postRoutes')
@@ -23,6 +24,7 @@ const db_URI = process.env.MONGO_URI
 app.use(methodOverride('_method')) // to override default html form method into other methods like DELETE, PUT or PATCH, which will be specified with the key '_method' in the html form as query parameter
 app.use(express.json())        // to look for JSON data in ALL incoming requests and parse it to javascript object notation
 app.use(express.urlencoded()) // to look for application/x-www-form-urlencoded data in ALL incoming requests and parse it to javascript object notation
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads'))) // making the 'uploads' folder public so that server can serve the files in that folder to the browser
 
 app.use(session({    // express-session initialization (global middleware)
     secret: process.env.SESSION_SECRET_KEY,
