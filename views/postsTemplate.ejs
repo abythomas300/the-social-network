@@ -2,6 +2,8 @@
 <html lang="en">
 <%- include('partials/_head') %>
 <style>
+
+
     .blog-container {
         padding: 2rem 0;
     }
@@ -34,7 +36,6 @@
         gap: 0.5rem; /* Adds space between the buttons */
         flex-wrap: wrap; /* Allows buttons to wrap to the next line on small screens */
         padding: 1rem 0;
-        border-top: 1px solid #e9ecef; /* A subtle line to separate from content */
         margin-top: 2rem;
     }
 
@@ -93,19 +94,20 @@
                                 <p class="lead mt-4"><%= blog.content %></p>
                                 <p class="text-muted medium mt-4">Posted by <span class="fst-italic fw-semibold mx-1"> <%= blog.author.username %> </span> on <%= dateConversion(blog.createdAt.toISOString().substring(0,10)) %></p>
                                 <!-- Option Buttons -->
-                                <div class="button-section mx-2">
-                                    <button class="btn btn-outline-primary btn-sm"><i class="bi bi-heart"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
-                                    <button class="btn btn-outline-primary btn-sm"><i class="bi bi-chat-left-dots"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
-
-                                    <!-- Checking whether author of a blog is logged in  -->
-                                    <%if(data.currentUser.userId === blog.author._id.toString()){%>
-                                        <a href="/post/editBlog/<%=blog._id%>"><button class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i></button></a>
-                                        <button class="btn btn-outline-primary" onclick="submitDeleteForm('<%=blog._id%>')"><i class="bi bi-trash3"></i></button>
-                                    <%}%>
-
-                                </div>
                             </div>
                         </div>
+                    </div>
+                    
+                    <div class="button-section">
+                        <button class="btn btn-outline-primary btn-sm"><i class="bi bi-heart"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
+                        <button class="btn btn-outline-primary btn-sm"><i class="bi bi-chat-left-dots"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
+
+                        <!-- Checking whether author of a blog is logged in  -->
+                        <%if(data.currentUser.userId === blog.author._id.toString()){%>
+                            <a href="/post/editBlog/<%=blog._id%>"><button class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i></button></a>
+                            <button class="btn btn-outline-primary" onclick="submitDeleteForm('<%=blog._id%>')"><i class="bi bi-trash3"></i></button>
+                        <%}%>
+
                     </div>
                 </div>             
 
