@@ -43,6 +43,7 @@ async function createNewPost(req, res) {
         console.log("Saving post to DB ...")
         await newPost.save() // saving the post to 'posts' collection in DB
         console.log("Post created Successfully")
+        console.log("Uploaded File Details: ", req.file)
         req.flash('success', 'Blog post created successfully')
         res.redirect('/post')  // redirecting user to blogs page after creating a post
     }
