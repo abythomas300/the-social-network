@@ -14,6 +14,10 @@ const postSchema = new mongoose.Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: user  // refering to the user model
+    },
+    thumbnail: {
+        type: String,
+        required: true
     }
 },{
     timestamps: true
