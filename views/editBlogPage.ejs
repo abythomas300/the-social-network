@@ -45,7 +45,7 @@
             <div class="card p-4">
               <h2 class="text-center mb-5 fw-bold fst-italic">Edit Your Blog </h2>
               <!-- BLOG UPDATE FORM -->
-              <form action="/post/<%=previousBlog._id%>?_method=PATCH" method="post" id="blogUpdateForm">
+              <form action="/post/<%=previousBlog._id%>?_method=PATCH" method="post" id="blogUpdateForm" enctype="multipart/form-data">
                 <div class="mb-4">
                   <p class="fw-semibold">Title</p>
                   <input type="text" class="form-control" id="blogName" name="title" value="<%=previousBlog.title%>">
@@ -53,6 +53,10 @@
                 <div class="mb-5">
                   <p class="fw-semibold">Content</p>
                   <textarea class="form-control" id="blogContent" name="content"  rows="6"><%=previousBlog.content%></textarea>
+                </div>
+                <div class="mb-5">
+                  <p class="mb-2 text-muted">Change blog thumbnail</p>
+                  <input type="file"  class="form-control" id="imageUpload" name="blogThumbail" required>
                 </div>
                 <div class="d-grid gap-2">
                   <button type="submit" class="btn btn-primary ">Save Changes</button>
