@@ -13,7 +13,7 @@ const postController = require('../controllers/postController')
 // route handlers
 router.get('/', isLoggedIn, postController.getAllPosts)
 router.get('/newblog', isLoggedIn, postController.showBlogCreationPage)
-router.post('/', isLoggedIn, upload.single('blogThumbail'), postController.createNewPost)
+router.post('/', isLoggedIn, upload.single('blogThumbnail'), postController.createNewPost)
 router.delete('/:blogId', isLoggedIn, postController.deletePost)
 router.get('/editBlog/:blogId', isLoggedIn, postController.showBlogEditPage )
 router.patch('/:blogId', isLoggedIn, postController.updatePost)
