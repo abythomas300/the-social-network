@@ -39,6 +39,15 @@
         .button-section .collapse-btn {
           margin-left: auto;
         }
+        .card-img-container{
+            height: 200px;         /* for fixed height*/
+            overflow: hidden;      /* to keep the cards parts from overflowed above other */
+        }
+        .card-img-container img {
+             width: 100%;
+            height: 100%;
+            object-fit: cover;     /* to keep image in a fixed ratio - irrespective of the image dimention */
+        }
     </style>
 </head>
 
@@ -61,6 +70,43 @@
     <%- include('partials/_navbar_admin')%>
 
     
+    <!-- Card for showing number of blogs uploaded -->
+    <div class="container my-5 ">
+        <div class="row g-3 d-flex justify-content-between">
+      
+          <!-- Card 1 -->
+          <div class="col-12 col-md-6 col-lg-4 ">
+            <div class="card h-100">
+              <div class="card-img-container">
+                <img src="" 
+                     class="card-img-top" alt="Total Blogs Published">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Ideas Published</h5>
+                <p class="card-text"></p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Card 2 -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card h-100">
+              <div class="card-img-container">
+                <img src="" 
+                     class="card-img-top" alt="Total Users Registered">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Happy Bloggers</h5>
+                <p class="card-text"></p>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+    </div>
+      
+
+
     <% if(blogs.length > 0) { %>
 
         <% blogs.forEach(function(blog){ %>
