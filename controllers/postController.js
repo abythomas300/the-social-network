@@ -107,6 +107,9 @@ async function updatePost(req, res) {
     try{
         
         const newData = req.body
+        const updatedBlogThumbnail = req.file.filename
+        newData.thumbnail = updatedBlogThumbnail // adding thumbnail field to the new data
+        console.log("Data to be updated: ", newData)
         const previousData = await postModel.findById(req.params.blogId)
         console.log("Previous Data...", previousData)
 

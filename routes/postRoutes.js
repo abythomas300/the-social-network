@@ -16,7 +16,7 @@ router.get('/newblog', isLoggedIn, postController.showBlogCreationPage)
 router.post('/', isLoggedIn, upload.single('blogThumbnail'), postController.createNewPost)
 router.delete('/:blogId', isLoggedIn, postController.deletePost)
 router.get('/editBlog/:blogId', isLoggedIn, postController.showBlogEditPage )
-router.patch('/:blogId', isLoggedIn, postController.updatePost)
+router.patch('/:blogId', isLoggedIn, upload.single('updatedBlogThumbail'), postController.updatePost)
 
 
 // exporting router object
