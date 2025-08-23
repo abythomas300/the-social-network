@@ -5,9 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Blogs Info</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <style>
+        /* truncate content in layout 1 */
+        .content-preview {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        /* smooth expand/collapse animation */
+        .layout-2, .layout-1 {
+          overflow: hidden;
+          max-height: 0;
+          opacity: 0;
+          transition: all 0.8s ease;
+        }
+        .layout-active {
+          max-height: 2000px; /* big enough to hold content */
+          opacity: 1;
+        }
+
+        /* collapse button right aligned */
+        .button-section {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .button-section .collapse-btn {
+          margin-left: auto;
+        }
+    </style>
 </head>
+
+
 <body>
 
+    <!-- Helper method to convert date from YYYY-MM-DD to DD-MM-YYYY -->
     <%
         function dateConversion(dateInYMD){
             const parts = dateInYMD.split('-')
@@ -16,30 +54,117 @@
         }
     %>
 
+    <!-- Header - imported from /partials -->
     <%- include('partials/_header_admin') %>
 
+    <!-- Navbar - imported from /partials -->
     <%- include('partials/_navbar_admin')%>
 
-    <%if(blogs.length >0){%>
-        <%blogs.forEach(function(blog){%>
-            <div class="container my-5">
-                <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                        <h4 class="display-4 text-center mb-4"><%= blog.title %></h4>
-                        <p class="text-muted text-center mb-4">Posted by <span class="fst-italic fw-bold"><%= blog.author.username %></span> on <%= dateConversion(blog.createdAt.toISOString().substring(0,10)) %></p>
-                        <div class="content">
-                            <p><%= blog.content %></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-        <%})%>
-    <%}%>
+    
+    <% if(blogs.length > 0) { %>
 
+        <% blogs.forEach(function(blog){ %>
+            
+            <div class="container my-4 blog-item">
+
+                <!-- LAYOUT 1 (Preview) -->
+                <div class="card mb-3 shadow-sm layout-1 layout-active">
+                  <div class="row g-0 align-items-center">
+                    <!-- Thumbnail -->
+                    <div class="col-md-3">
+                      <img src="/uploads/<%= blog.thumbnail %>" 
+                           class="img-fluid rounded-start" 
+                           alt="<%= blog.title %>">
+                    </div>
+                    <!-- Blog Info -->
+                    <div class="col-md-8 p-0">
+                      <div class="card-body">
+                        <h5 class="disaplay-5 fw-bold lh-2"><%= blog.title %></h5>
+                        <p class="card-text content-preview">
+                          <%= blog.content %>
+                        </p>
+                        <small class="text-muted">Posted by <span class="fst-italic fw-semibold mx-1"> <%= blog.author.username %> </span> on <%= dateConversion(blog.createdAt.toISOString().substring(0,10)) %> </small>
+                      </div>
+                    </div>
+                    <!-- Expand Button -->
+                    <div class="col-md-1 text-end pe-3">
+                      <button class="btn btn-outline-danger btn-sm expand-btn"><i class="bi bi-arrow-down-square-fill text-danger h5"></i></button>
+                    </div>
+                  </div>
+                </div>
+              
+                <!-- LAYOUT 2 (Full) -->
+                <div class="container blog-container layout-2">
+                  <div class="row">
+                  
+                    <!-- Image column -->
+                    <div class="col-lg-6 blog-image-col mt-3">
+                      <img src="/uploads/<%=blog.thumbnail%>" 
+                           alt="<%= blog.title %>" 
+                           class="img-fluid blog-image">
+                    </div>
+                    
+                    <!-- Text content column -->
+                    <div class="col-lg-6 blog-text-col">
+                      <div class="blog-content">
+                        <h1 class="display-5 fw-bold lh-2"><%= blog.title %></h1>
+                        <p class="lead mt-4"><%= blog.content %></p>
+                        <p class="text-muted medium mt-4">
+                          Posted by <span class="fst-italic fw-semibold mx-1"> 
+                            <%= blog.author.username %> 
+                          </span> 
+                          on <%= dateConversion(blog.createdAt.toISOString().substring(0,10)) %>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Buttons -->
+                  <div class="button-section mt-3">
+                    <div>
+                      <button class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-heart "></i>
+                        <span style="font-style: normal; font-size: large;"> 0</span>
+                      </button>
+                      <button class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-chat-left-dots"></i>
+                        <span style="font-style: normal; font-size: large;"> 0</span>
+                      </button>
+                    </div>
+                    
+                    <!-- Collapse button at right -->
+                    <button class="btn btn-outline-danger collapse-btn"><i class="bi bi-arrow-up-square-fill text-danger h5"></i></button>
+                  </div>
+                  <hr>
+                </div>
+              
+              </div>
+
+        <% }) %>
+    <% } %>
 
     
-
+    <script>
+        // Expand button
+        document.querySelectorAll(".expand-btn").forEach(btn => {
+          btn.addEventListener("click", function() {
+            const blogItem = btn.closest(".blog-item");
+            blogItem.querySelector(".layout-1").classList.remove("layout-active");
+            blogItem.querySelector(".layout-2").classList.add("layout-active");
+          });
+        });
+    
+        // Collapse button
+        document.querySelectorAll(".collapse-btn").forEach(btn => {
+          btn.addEventListener("click", function() {
+            const blogItem = btn.closest(".blog-item");
+            blogItem.querySelector(".layout-2").classList.remove("layout-active");
+            blogItem.querySelector(".layout-1").classList.add("layout-active");
+          });
+        });
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
 </body>
 </html>
