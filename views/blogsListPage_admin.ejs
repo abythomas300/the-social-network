@@ -179,7 +179,7 @@
                       <button class="btn btn-outline-danger btn-md">
                         <i class="bi bi-pencil-square"></i>
                       </button>
-                      <button class="btn btn-outline-danger btn-md">
+                      <button class="btn btn-outline-danger btn-md" onclick="submitDeleteForm('<%=blog._id%>')">
                         <i class="bi bi-trash3"></i>
                       </button>
                     </div>
@@ -195,7 +195,9 @@
         <% }) %>
     <% } %>
 
-    
+    <!-- Form to delete a blog(action is defined in a saperate method in script) -->
+    <form action="" method="POST" id="blogDeleteForm"></form>
+
     <script>
         // Expand button
         document.querySelectorAll(".expand-btn").forEach(btn => {
@@ -214,6 +216,13 @@
             blogItem.querySelector(".layout-1").classList.add("layout-active");
           });
         });
+
+        // method to submit the delete blog form
+        function submitDeleteForm(blogId){
+          const blogDeleteForm = document.getElementById('blogDeleteForm')
+          blogDeleteForm.action = `/post/${blogId}?_method=DELETE`  // setting form action URL (method overriding included)
+          blogDeleteForm.submit()
+        }
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
