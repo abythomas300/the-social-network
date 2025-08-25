@@ -99,7 +99,7 @@
 
                         <!-- Checking whether author of a blog is logged in  -->
                         <%if(data.currentUser.userId === blog.author._id.toString()){%>
-                            <button class="btn btn-outline-primary btn-md"><a href="/post/editBlog/<%=blog._id%>"></a><i class="bi bi-pencil-square"></i></button>
+                            <a href="/post/editBlog/<%=blog._id%>"><button class="btn btn-outline-primary btn-md"><i class="bi bi-pencil-square"></i></button></a>
                             <button class="btn btn-outline-primary btn-md" onclick="submitDeleteForm('<%=blog._id%>')"><i class="bi bi-trash3"></i></button>
                         <%}%>
 

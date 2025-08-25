@@ -87,6 +87,7 @@ async function deletePost(req, res) {
 async function showBlogEditPage(req, res) {
 
     try{
+        console.log("Request flow reached controller, view on standby")
         const blogIdToDelete = req.params.blogId
         console.log("Blog Id: ", blogIdToDelete)
         const entireBlog = await postModel.findById(blogIdToDelete)

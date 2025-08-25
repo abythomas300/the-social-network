@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Edit Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <style>
+        body {
+          background-color: #dc3545; 
+        }
+        .form-container {
+          margin-top: 50px;
+        }
+        .form-container .card {
+          background-color: #ffffff;
+          border-radius: 25px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h2{
+          color: #0d6efd;
+        }
+        button{
+          font-style: italic;
+          height: 3rem;
+        }
+        hr{
+            color: #ffffff;
+            margin-top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <%- include('partials/_header_admin')%>
+
+    <%- include('partials/_navbar_admin')%>
+
+    <hr>
+
+    <div class="container form-container my-5">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-lg-6">
+            <div class="card p-4">
+              <h2 class="text-center mb-5 fw-bold fst-italic">Edit Blog </h2>
+              <!-- BLOG UPDATE FORM -->
+              <form action="/post/<%=previousBlog._id%>?_method=PATCH" method="post" id="blogUpdateForm" enctype="multipart/form-data">
+                <div class="mb-4">
+                  <p class="fw-semibold">Title</p>
+                  <input type="text" class="form-control" id="blogName" name="title" value="<%=previousBlog.title%>">
+                </div>
+                <div class="mb-5">
+                  <p class="fw-semibold">Content</p>
+                  <textarea class="form-control" id="blogContent" name="content"  rows="6"><%=previousBlog.content%></textarea>
+                </div>
+                <div class="mb-5">
+                  <p class="mb-2 text-muted">Change blog thumbnail</p>
+                  <input type="file"  class="form-control" id="imageUpload" name="updatedBlogThumbail" required>
+                </div>
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-danger ">Save Changes</button>
+                  <button type="reset" class="btn btn-secondary">Clear</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <%- include('partials/_footer')%>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+</body>
+</html>

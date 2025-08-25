@@ -9,6 +9,7 @@ const adminController = require('../controllers/adminController')
 router.get('/', adminController.displayAdminHomepage)
 router.get('/blogInfo', adminController.displayAllBlogs)
 router.get('/userInfo', adminController.displayUsersList)
+router.get('/editBlog/:blogId', adminController.showBlogEditPage)
 
 
 

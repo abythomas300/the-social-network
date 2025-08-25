@@ -37,6 +37,20 @@ function displayUsersList(req, res) {
 
 }
 
+async function showBlogEditPage(req, res) {
+    try{
+        const blogIdToDelete = req.params.blogId
+        console.log("Blog Id: ", blogIdToDelete)
+        const entireBlog = await postModel.findById(blogIdToDelete)
+        console.log("The Entire Blog to be updated--> ", entireBlog)
+        res.render('editBlogPage', {previousBlog: entireBlog})
+
+    }catch(error){
+        console.log("Error showing blog edit page, reason: ", error)
+        res.send("Error displaying blog edit page")
+    }
+}
+
 
 
 
@@ -45,5 +59,6 @@ function displayUsersList(req, res) {
 module.exports = {
     displayAdminHomepage, 
     displayUsersList,
-    displayAllBlogs
+    displayAllBlogs,
+    showBlogEditPage
 }
