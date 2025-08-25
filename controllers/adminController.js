@@ -31,10 +31,17 @@ async function displayAllBlogs(req, res) {
     }
 }
 
-function displayUsersList(req, res) {
+async function displayUsersList(req, res) {
 
-    res.render('usersListPage_admin')
+    try{
 
+        const allUsers = await userModel.find({})
+        console.log(allUsers)
+        res.render('usersListPage_admin', {userInfo: allUsers})
+
+    }catch(error){
+
+    }
 }
 
 async function showBlogEditPage(req, res) {
