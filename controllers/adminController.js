@@ -1,4 +1,5 @@
 const postModel = require('../models/post')
+const userModel = require('../models/user')
 
 
 
@@ -11,8 +12,12 @@ async function displayAllBlogs(req, res) {
     try{
         const allBlogs = await postModel.find({}).populate('author')
         const blogCount = await postModel.countDocuments({}) // taking count of all available blogs in DB
+        const allUsers = await userModel.find({})
+        const usersCount = await userModel.countDocuments({})
+        console.log("Total Users:", usersCount)
         console.log("Total Blogs fetched from DB: ", blogCount)
-        allBlogs.blogCount = blogCount // adding blogs count to object passing to view
+        allBlogs.blogCount = blogCount // adding blogs count to the object that is passed to view
+        allBlogs.userCount = usersCount // adding users count to object that is passed to view
         console.log("ALL FETCHED BLOGS:")
         console.log(allBlogs)
         if(allBlogs.length === 0){
