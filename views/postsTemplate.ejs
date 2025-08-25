@@ -35,14 +35,9 @@
         display: flex;
         gap: 0.5rem; /* Adds space between the buttons */
         flex-wrap: wrap; /* Allows buttons to wrap to the next line on small screens */
-        padding: 1rem 0;
         margin-top: 2rem;
     }
 
-    .button-section .btn {
-        font-size: 1rem; /* Larger icon size */
-        padding: 0.5rem 0.75rem;
-    }
 </style>
 <body>
 
@@ -104,8 +99,8 @@
 
                         <!-- Checking whether author of a blog is logged in  -->
                         <%if(data.currentUser.userId === blog.author._id.toString()){%>
-                            <a href="/post/editBlog/<%=blog._id%>"><button class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i></button></a>
-                            <button class="btn btn-outline-primary" onclick="submitDeleteForm('<%=blog._id%>')"><i class="bi bi-trash3"></i></button>
+                            <button class="btn btn-outline-primary btn-md"><a href="/post/editBlog/<%=blog._id%>"></a><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-outline-primary btn-md" onclick="submitDeleteForm('<%=blog._id%>')"><i class="bi bi-trash3"></i></button>
                         <%}%>
 
                     </div>
