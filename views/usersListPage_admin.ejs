@@ -40,8 +40,8 @@
         <div class="container my-5">
         
           <!-- TABLE VIEW - For Medium & Large Screens -->
-          <div class="user-table">
-            <table class="table table-column-striped table-hover align-middle">
+          <div>
+            <table class="table table-column-striped table-hover align-middle user-table">
               <thead class="table-secondary table-danger">
                 <tr>
                   <th colspan="2" scope="col" style="text-align: center;">User</th>
@@ -54,7 +54,7 @@
 
               <%userInfo.forEach(function(user){%>
 
-                <tbody>
+                <tbody class="user-table">
                   <tr>
                     <td><img src="https://i.pravatar.cc/50?random=<%= user._id%>" class="rounded-circle img-fluid"></td>
                     <td><%=user.username%></td>
