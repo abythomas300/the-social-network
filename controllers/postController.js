@@ -64,7 +64,7 @@ async function deletePost(req, res) {
         // checking whether current user is the author of the blog
         if(originalBlog.author._id.toString() === req.session.user.userId) {
 
-            console.log("Current user id and Blog author id does not match ")
+            console.log("Current user id and Blog author id match ")
             const deletedPost = await postModel.findByIdAndDelete(postIdToRemove)
             console.log("Deleted Blog Details:", deletedPost)
             req.flash('success', 'Blog post deleted successfully')
