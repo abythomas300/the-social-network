@@ -83,7 +83,7 @@
               </div>
               <div class="card-body">
                 <h5 class="card-title">Ideas Published</h5>
-                <p class="card-text fw-bold fs-2 text-danger"><%= blogs.blogCount%></p>
+                <p class="card-text fw-bold fs-2 text-danger"><%=data.blogsCount%></p>
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@
               </div>
               <div class="card-body">
                 <h5 class="card-title">Happy Bloggers</h5>
-                <p class="card-text fw-bold fs-2 text-danger"><%= blogs.userCount%></p>
+                <p class="card-text fw-bold fs-2 text-danger"><%=data.usersCount%></p>
               </div>
             </div>
           </div>
@@ -107,9 +107,9 @@
       
 
 
-    <% if(blogs.length > 0) { %>
+    <% if(data.blogs.length > 0) { %>
 
-        <% blogs.forEach(function(blog){ %>
+        <% data.blogs.forEach(function(blog){ %>
             
             <div class="container my-4 blog-item">
 
