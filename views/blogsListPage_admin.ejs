@@ -63,6 +63,20 @@
         }
     %>
 
+    <!-- Checking for flash messages -->
+    <%if(data.message.length > 0){%>
+
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div class="toast" id="liveToast" role="alert">
+          <div class="toast-body bg-success bg-gradient text-white">
+            <%= data.message %>
+          </div>
+        </div>
+      </div>
+
+    <%}%>
+
+
     <!-- Header - imported from /partials -->
     <%- include('partials/_header_admin') %>
 
@@ -201,6 +215,30 @@
     <form action="" method="POST" id="blogDeleteForm"></form>
 
     <script>
+
+        // initializing BS Toast component
+        document.addEventListener('DOMContentLoaded', function() {
+          var toastElement = document.getElementById('liveToast');
+          if (toastElement) {
+            var toast = new bootstrap.Toast(toastElement); // Calling BS toast function
+            toast.show(); 
+
+            // Hide toast after 3 seconds 
+            setTimeout(function() {
+             toast.hide();
+            }, 3000);
+           }
+         });
+
+
+        // method to submit the delete blog form
+        function submitDeleteForm(blogId){
+          const blogDeleteForm = document.getElementById('blogDeleteForm')
+          blogDeleteForm.action = `/post/${blogId}?_method=DELETE`  // setting form action URL (method overriding included)
+          blogDeleteForm.submit()
+        }
+
+        
         // Expand button
         document.querySelectorAll(".expand-btn").forEach(btn => {
           btn.addEventListener("click", function() {
@@ -210,6 +248,7 @@
           });
         });
     
+
         // Collapse button
         document.querySelectorAll(".collapse-btn").forEach(btn => {
           btn.addEventListener("click", function() {
@@ -219,12 +258,6 @@
           });
         });
 
-        // method to submit the delete blog form
-        function submitDeleteForm(blogId){
-          const blogDeleteForm = document.getElementById('blogDeleteForm')
-          blogDeleteForm.action = `/post/${blogId}?_method=DELETE`  // setting form action URL (method overriding included)
-          blogDeleteForm.submit()
-        }
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
