@@ -111,22 +111,29 @@ async function updatePost(req, res) {
     try{
         
         const newData = req.body
-        const updatedBlogThumbnail = req.file.filename
+        const updatedBlogThumbnail = req.file.filename  // fetching thumbnail name from the file object added to the request object by multer
         newData.thumbnail = updatedBlogThumbnail // adding thumbnail field to the new data
         console.log("Data to be updated: ", newData)
         const previousData = await postModel.findById(req.params.blogId)
         console.log("Previous Data...", previousData)
 
-        // checking whether current user is the author of the blog
-        if(previousData.author._id.toString() === req.session.user.userId) {
+        // checking whether current user is the author of the blog or whether the request is made by an admin
+        if((previousData.author._id.toString() === req.session.user.userId) || (req.session.user.role === 'admin')) {
+
             const updatedData = await postModel.findByIdAndUpdate(req.params.blogId, newData, {new: true})
             console.log("Data Updated")
             console.log("Printing Updated Data ", updatedData)
             req.flash('success', 'Blog post updated successfully')
-            res.redirect('/post')
+            
+            //redirecting based on role
+            const role = req.session.user.role
+            role === 'admin'? res.redirect('/admin/blogInfo'): res.redirect('/post')
+
         } else {
+
             console.log("Current user id and Blog author id does not match")
             res.send("Cannot edit someone else's blog post")
+
         }
 
     }
