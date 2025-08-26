@@ -61,14 +61,17 @@ async function deletePost(req, res) {
         console.log("Post delete request detected, Post id to delete: ", postIdToRemove)
         const originalBlog = await postModel.findById(req.params.blogId)
 
-        // checking whether current user is the author of the blog
-        if(originalBlog.author._id.toString() === req.session.user.userId) {
+        // checking whether current user is the author of the blog or whether the request is made by an admin
+        if((originalBlog.author._id.toString() === req.session.user.userId) || (req.session.user.role === 'admin')) {
 
-            console.log("Current user id and Blog author id match ")
+            console.log("Blog deletion request from: ", req.session.user)
             const deletedPost = await postModel.findByIdAndDelete(postIdToRemove)
             console.log("Deleted Blog Details:", deletedPost)
             req.flash('success', 'Blog post deleted successfully')
-            res.redirect('/post')
+            
+            // redirecting based on role
+            const role = req.session.user.role
+            role === 'admin'? res.redirect('/admin/blogInfo'): res.redirect('/post')
 
         }else{
             console.log("Current user id and Blog author id does not match")
