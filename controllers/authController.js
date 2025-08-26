@@ -63,7 +63,11 @@ async function loginUser(req, res) {
                 console.log(`User's Role: ${req.session.user.role}`)
 
                 req.flash('success', 'You have successfuly logged in.')  // creating a flash message
-                res.redirect('/post')  // redirecting users to the blogs feed page 
+                
+                // redirecting based on role
+                const role = req.session.user.role
+                role === 'admin'? res.redirect('/admin/blogInfo'): res.redirect('/post') 
+
             } else {
                 console.log("Passwords Does Not Match")
                 res.send("Wrong Password")
