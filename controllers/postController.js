@@ -146,6 +146,46 @@ async function updatePost(req, res) {
 
 
 
+async function likeBlog(req, res) {
+
+    try{
+
+        const blogId = req.params.blogId
+        const currentUserId  = req.session.user.userId
+
+        const blogDetails = await postModel.findById(blogId)
+
+        const hasLiked = blogDetails.likes.includes(currentUserId)
+
+        if(hasLiked) {
+
+            console.log("This user has already liked this post once.")
+            console.log("Removing user id from likes array")
+            const updatedLikeArray = await postModel.findByIdAndUpdate(blogId, {$pull: {like: currentUserId}}, {new:true} )
+            console.log("User id removed from like array, result: ", updatedLikeArray)
+
+        } else {
+
+            console.log("This user is liking this post for the first time.")
+            console.log("Adding user id to likes array.")
+            const updatedLikeArray = await postModel.findByIdAndUpdate(blogId, {$addToSet: {likes: currentUserId}}, {new: true})
+            console.log("User id added to like array, result: ", updatedLikeArray)
+
+        }
+        
+        res.redirect('/post')
+
+
+    }catch(error) {
+
+        console.log("Like functionality failed, reason: ", error)
+
+    }
+
+}
+
+
+
 // exporting all methods
 module.exports = {
     getAllPosts,
@@ -153,5 +193,6 @@ module.exports = {
     deletePost,
     showBlogEditPage,
     updatePost,
-    showBlogCreationPage
+    showBlogCreationPage,
+    likeBlog
 }
