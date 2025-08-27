@@ -94,7 +94,7 @@
                     </div>
                     
                     <div class="button-section">
-                        <button class="btn btn-outline-primary btn-sm" onclick="submitBlogLikeForm('<%=blog._id%>')"><i class="bi bi-heart"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="submitBlogLikeForm('<%=blog._id%>')"><i class="bi bi-heart"></i><span style="font-style: normal; font-size: large;"> <%= blog.likes.length %> </span></button>
                         <button class="btn btn-outline-primary btn-sm"><i class="bi bi-chat-left-dots"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
 
                         <!-- Checking whether author of a blog is logged in  -->
@@ -163,6 +163,7 @@
         const blogLikeForm = document.getElementById('blogLikeForm')
         blogLikeForm.action = `/post/like/${blogId}`
         console.log("Request: ", blogLikeForm.action)
+        blogLikeForm.submit()
     }
     </script>
 
