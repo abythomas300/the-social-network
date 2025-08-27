@@ -25,6 +25,23 @@ const postSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,   
             ref: user
         }
+    ],
+    comments: [
+        {
+            // comments field is an array, each array document has 3 fields
+            commentAuthor: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: user
+            },
+            content: {
+                type: String,
+                required: true
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }
     ]
 },{
     timestamps: true
