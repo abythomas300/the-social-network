@@ -18,7 +18,14 @@ const postSchema = new mongoose.Schema({
     thumbnail: {
         type: String,
         required: true
-    }
+    }, 
+    likes: [
+        // 'likes' field holds array with user id as values
+        {
+            type: mongoose.Schema.Types.ObjectId,   
+            ref: user
+        }
+    ]
 },{
     timestamps: true
 })
