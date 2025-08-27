@@ -38,6 +38,10 @@
         margin-top: 2rem;
     }
 
+    .comment-box {
+        border: 1px solid #dee2e6;
+    }
+
 </style>
 <body>
 
@@ -93,9 +97,10 @@
                         </div>
                     </div>
                     
+                    <!-- Buttons section -->
                     <div class="button-section">
                         <button class="btn btn-outline-primary btn-sm" onclick="submitBlogLikeForm('<%=blog._id%>')"><i class="bi bi-heart"></i><span style="font-style: normal; font-size: large;"> <%= blog.likes.length %> </span></button>
-                        <button class="btn btn-outline-primary btn-sm"><i class="bi bi-chat-left-dots"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')"><i class="bi bi-chat-left-dots"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
 
                         <!-- Checking whether author of a blog is logged in  -->
                         <%if(data.currentUser.userId === blog.author._id.toString()){%>
@@ -104,6 +109,30 @@
                         <%}%>
 
                     </div>
+
+                    <!-- Comments Section -->
+                    <div class="comments-section mt-4" id="comments-<%=blog._id%>" style="display: none;">
+                        <div style="max-width: 70%;">
+                            <!-- Comments heading -->
+                            <h5 class="fw-bold mb-3">Comments</h5>
+                            <div class="comment-box p-3 mb-2 rounded shadow-sm bg-light">
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <!-- User Profile Picture -->
+                                     <img src="https://i.pravatar.cc/40" class="rounded-circle" width="40" height="40">
+                                     <div class="d-flex align-items-center justify-content-start">
+                                        <span class="fw-bold mx-2">(username)</span> | <span class="text-muted mx-2">(date in normal format)</span>
+                                     </div>
+                                </div>
+                                <!-- Comment Content -->
+                                <div class="mt-0">
+                                    <p class="mt-2">(Comment content: This is one of the best blog application we have seen after fb, x and reddit).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                 </div>             
 
             <hr class="hr">
@@ -145,6 +174,17 @@
       }, 3000);
      }
     });
+
+
+    // method to toggle comment section
+    function toggleCommentSection(sectionId) {
+        const commentSection = document.getElementById(sectionId)
+        if(commentSection.style.display === 'none') {
+            commentSection.style.display = 'block'
+        } else {
+            commentSection.style.display = 'none'
+        }
+    }
 
 
     // method to submit the blog delete form
