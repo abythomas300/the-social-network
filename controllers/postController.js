@@ -185,6 +185,24 @@ async function likeBlog(req, res) {
 }
 
 
+async function addComment(req, res) {
+
+    const commentContent = req.body.comment
+    const blogId = req.params.blogId
+    const commentAuthor = req.session.user.userId
+    
+    console.log("Comment content: ", commentContent)
+    console.log("Blog id: ", blogId)
+    console.log("Commented by: ", commentAuthor)
+
+    const updatedData = await postModel.findByIdAndUpdate(blogId, {$addToSet: {comments: {commentAuthor:commentAuthor, content: commentContent } } }, {new:true})
+    console.log("Updated Data: ", updatedData)
+
+    res.redirect('/post')
+
+}
+
+
 
 // exporting all methods
 module.exports = {
@@ -194,5 +212,6 @@ module.exports = {
     showBlogEditPage,
     updatePost,
     showBlogCreationPage,
-    likeBlog
+    likeBlog,
+    addComment
 }

@@ -18,6 +18,7 @@ router.delete('/:blogId', isLoggedIn, postController.deletePost)
 router.get('/editBlog/:blogId', isLoggedIn, postController.showBlogEditPage )
 router.patch('/:blogId', isLoggedIn, upload.single('updatedBlogThumbail'), postController.updatePost)
 router.post('/like/:blogId', isLoggedIn, postController.likeBlog)
+router.post('/comment/:blogId', postController.addComment )
 
 
 
