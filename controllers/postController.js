@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 
 async function getAllPosts(req, res){
 
-    const allPosts = await postModel.find({}).populate('author')
+    const allPosts = await postModel.find({}).populate([{path: 'author'}, {path: 'comments.commentAuthor'}])
     const documentCount = await postModel.countDocuments({})
     console.log("Total number of blogs fetched from DB: ", documentCount)
     if(allPosts.length === 0){  // if there is no data in DB (ie. 'allPosts' is empty)
@@ -190,7 +190,7 @@ async function addComment(req, res) {
     const commentContent = req.body.comment
     const blogId = req.params.blogId
     const commentAuthor = req.session.user.userId
-    
+
     console.log("Comment content: ", commentContent)
     console.log("Blog id: ", blogId)
     console.log("Commented by: ", commentAuthor)

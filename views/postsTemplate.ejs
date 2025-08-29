@@ -112,28 +112,45 @@
 
                     <!-- Comments Section -->
                     <div class="comments-section mt-4" id="comments-<%=blog._id%>" style="display: none;">
+
                         <div style="max-width: 70%;">
                             <!-- Comments heading -->
                             <h5 class="fw-bold mb-3">Comments</h5>
-                            <div class="comment-box p-3 mb-2 rounded shadow-sm bg-light">
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <!-- User Profile Picture -->
-                                     <img src="https://i.pravatar.cc/40" class="rounded-circle" width="40" height="40">
-                                     <div class="d-flex align-items-center justify-content-start">
-                                        <span class="fw-bold mx-2">(username)</span> | <span class="text-muted mx-2">(date in normal format)</span>
-                                     </div>
-                                </div>
-                                <!-- Comment Content -->
-                                <div class="mt-0">
-                                    <p class="mt-2">(Comment content: This is one of the best blog application we have seen after fb, x and reddit).</p>
-                                </div>
-                            </div>
+                            
+                            <!-- Displaying each comment inside this blog -->
+                            <%if(blog.comments.length > 0){%>
+
+                                <%blog.comments.forEach(function(comment){%>
+
+                                    <div class="comment-box p-3 mb-2 rounded shadow-sm bg-light">
+                                        <div class="d-flex align-items-center justify-content-start">
+                                            <% // User Profile Picture %>
+                                             <img src="https://i.pravatar.cc/40" class="rounded-circle" width="40" height="40">
+                                             <div class="d-flex align-items-center justify-content-start">
+                                                <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%></span>
+                                             </div>
+                                        </div>
+                                        <% // Comment Content %>
+                                        <div class="mt-0">
+                                            <p class="mt-2"><%=comment.content%></p>
+                                        </div>
+                                    </div>
+
+                                <%})%>
+
+                            <%}else{%>
+
+                                <p class="text-muted fst-italic">No comments yet. Be the first to comment!</p>
+                                
+                            <%}%>
+
                         </div>
+
                     </div>
 
                     <!-- Comment Input Form -->
                      <form action="/post/comment/<%=blog._id%>" method="post" class="mt-4">
-                        <div class="d-flex align-items-start" style="max-width: 75%;">
+                        <div class="d-flex align-items-start" style="max-width: 70%;">
                             <!-- user profile picture -->
                             <img src="https://i.pravatar.cc/40" alt="Profile Picture" class="rounded-circle me-3" width="40" height="40">
                             <!-- Input -->
