@@ -161,7 +161,7 @@ async function likeBlog(req, res) {
 
             console.log("This user has already liked this post once.")
             console.log("Removing user id from likes array")
-            const updatedLikeArray = await postModel.findByIdAndUpdate(blogId, {$pull: {like: currentUserId}}, {new:true} )
+            const updatedLikeArray = await postModel.findByIdAndUpdate(blogId, {$pull: {likes: currentUserId}}, {new:true} )
             console.log("User id removed from like array, result: ", updatedLikeArray)
 
         } else {
