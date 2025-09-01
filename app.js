@@ -9,6 +9,7 @@ const methodOverride = require('method-override')
 const path = require('path')
 const helmet = require('helmet')
 
+
 // importing routes
 const postRouter = require('./routes/postRoutes')
 const adminRoutes = require('./routes/adminRoutes')
@@ -21,8 +22,16 @@ const authController = require('./controllers/authController')
 const port = process.env.PORT
 const db_URI = process.env.MONGO_URI
 
-// middleware definitions
+// middleware definitions and configurations
 app.use(helmet())
+app.use(helmet.contentSecurityPolicy({  // overriding helmet's default Content Security Policy to allow loading of resources from trusted domains
+    directives: {
+        "default-src" : ["'self'"],
+        "script-src" : ["'self'", "https://cdn.jsdelivr.net"],
+        "img-src": ["'self'", "https://i.pravatar.cc"]
+    },
+}),)
+
 app.use(methodOverride('_method')) // to override default html form method into other methods like DELETE, PUT or PATCH, which will be specified with the key '_method' in the html form as query parameter
 app.use(express.json())        // to look for JSON data in ALL incoming requests and parse it to javascript object notation
 app.use(express.urlencoded()) // to look for application/x-www-form-urlencoded data in ALL incoming requests and parse it to javascript object notation
