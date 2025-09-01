@@ -125,7 +125,7 @@
                                     <div class="comment-box p-3 mb-2 rounded shadow-sm bg-light">
                                         <div class="d-flex align-items-center justify-content-start">
                                             <% // User Profile Picture %>
-                                             <img src="https://i.pravatar.cc/40" class="rounded-circle" width="40" height="40">
+                                             <img src="https://avatar.iran.liara.run/username?username=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
                                              <div class="d-flex align-items-center justify-content-start">
                                                 <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
                                              </div>
@@ -152,7 +152,7 @@
                      <form action="/post/comment/<%=blog._id%>" method="post" class="mt-4">
                         <div class="d-flex align-items-start" style="max-width: 70%;">
                             <!-- user profile picture -->
-                            <img src="https://i.pravatar.cc/40" alt="Profile Picture" class="rounded-circle me-3" width="40" height="40">
+                            <img src="https://avatar.iran.liara.run/username?username=<%=data.currentUser.username%>" alt="Profile Picture" class="rounded-circle me-3" width="40" height="40">
                             <!-- Input -->
                             <div class="flex-grow-1">
                                 <textarea name="comment" rows="2" class="form-control mb-3" placeholder="Write something..." required></textarea>

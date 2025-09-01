@@ -28,7 +28,7 @@ app.use(helmet.contentSecurityPolicy({  // overriding helmet's default Content S
     directives: {
         "default-src" : ["'self'"],
         "script-src" : ["'self'", "https://cdn.jsdelivr.net"],
-        "img-src": ["'self'", "https://i.pravatar.cc"]
+        "img-src": ["'self'", "https://i.pravatar.cc", "https://avatar.iran.liara.run"]
     },
 }),)
 
