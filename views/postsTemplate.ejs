@@ -103,7 +103,7 @@
                     <!-- Buttons section -->
                     <div class="button-section">
                         <button class="btn btn-outline-primary btn-sm" onclick="submitBlogLikeForm('<%=blog._id%>')"><i class="bi bi-heart"></i><span style="font-style: normal; font-size: large;"> <%= blog.likes.length %> </span></button>
-                        <button class="btn btn-outline-primary btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')"><i class="bi bi-chat-left-dots"></i><span style="font-style: normal; font-size: large;"> 0</span></button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')"><i class="bi bi-chat-left-dots"></i><span style="font-style: normal; font-size: large;"> <%=blog.comments.length%></span></button>
 
                         <!-- Checking whether author of a blog is logged in  -->
                         <%if(data.currentUser.userId === blog.author._id.toString()){%>
