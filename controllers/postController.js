@@ -173,7 +173,7 @@ async function likeBlog(req, res) {
 
         }
         
-        res.redirect('/post')
+        res.status(200).send('--Message From Sever-- Like Operation Successfull!👍')
 
 
     }catch(error) {
