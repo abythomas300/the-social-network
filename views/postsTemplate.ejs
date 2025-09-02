@@ -102,8 +102,8 @@
                     
                     <!-- Buttons section -->
                     <div class="button-section">
-                        <button class="btn btn-outline-primary btn-sm likeButton" onclick="likeHandler('<%=blog._id%>')"><i class="bi bi-heart"></i><span style="font-style: normal; font-size: large;"> <%= blog.likes.length %> </span></button>
-                        <button class="btn btn-outline-primary btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')"><i class="bi bi-chat-left-dots"></i><span style="font-style: normal; font-size: large;"> <%=blog.comments.length%></span></button>
+                        <button class="btn btn-outline-primary btn-sm " onclick="likeHandler('<%=blog._id%>')"><i class="likeButton bi bi-heart"><span class="likeButtonText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')"><i class="bi bi-chat-left-dots"><span class="ms-2" style="font-style: normal; font-size: large;"><%=blog.comments.length%></span></i></button>
 
                         <!-- Checking whether author of a blog is logged in  -->
                         <%if(data.currentUser.userId === blog.author._id.toString()){%>
@@ -224,6 +224,30 @@
         blogDeleteForm.action = `/post/${blogId}?_method=DELETE` 
         blogDeleteForm.submit()
     }
+
+
+    // temporary updation of like count in client side
+    const likeButtons = document.querySelectorAll('.likeButton')
+    likeButtons.forEach(function(likeButton){
+        likeButton.addEventListener('click', function(event){
+
+            const button = event.currentTarget
+            let likeButtonText = button.querySelector('.likeButtonText')
+
+            // toggling functionality
+            if(button.classList.contains('bi-heart')) {
+                button.classList.remove('bi-heart')
+                button.classList.add('bi-heart-fill')
+                likeButtonText.textContent = parseInt(likeButtonText.textContent) + 1
+            } else if(button.classList.contains('bi-heart-fill')) {
+                button.classList.remove('bi-heart-fill')
+                button.classList.add('bi-heart')
+                likeButtonText.textContent = parseInt(likeButtonText.textContent) - 1
+            }
+
+
+        })
+    })
 
 
     // handling the like  request mannually using fetch() to avoid page reload when clicking on like button
