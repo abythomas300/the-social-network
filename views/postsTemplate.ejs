@@ -105,9 +105,9 @@
                         
                         <%// checking whether the current user has already liked the blog (for showing the active like button)%>
                         <%if(blog.likes.includes(data.currentUser.userId)) {%>
-                            <button class="btn btn-outline-primary btn-sm " onclick="likeHandler('<%=blog._id%>')"><i class="likeButton bi bi-heart-fill"><span class="likeButtonText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
+                            <button class="btn btn-outline-primary btn-sm likeButton" onclick="likeHandler('<%=blog._id%>')"><i class="likeIcon bi bi-heart-fill"><span class="likeCountText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
                         <%} else {%> <%// shows inactive like button%>
-                            <button class="btn btn-outline-primary btn-sm " onclick="likeHandler('<%=blog._id%>')"><i class="likeButton bi bi-heart"><span class="likeButtonText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
+                            <button class="btn btn-outline-primary btn-sm likeButton" onclick="likeHandler('<%=blog._id%>')"><i class="likeIcon bi bi-heart"><span class="likeCountText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
                         <%}%>
 
                         <button class="btn btn-outline-primary btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')"><i class="bi bi-chat-left-dots"><span class="ms-2" style="font-style: normal; font-size: large;"><%=blog.comments.length%></span></i></button>
@@ -238,18 +238,22 @@
     likeButtons.forEach(function(likeButton){
         likeButton.addEventListener('click', function(event){
 
-            const button = event.currentTarget
-            let likeButtonText = button.querySelector('.likeButtonText')
+            const icon = likeButton.querySelector('i')  // getting the i tag(like icon element) inside the event triggered button
+            let likeCountText = likeButton.querySelector('.likeCountText') // getting the span tag(like count) element inside the event triggered button
 
             // toggling functionality
-            if(button.classList.contains('bi-heart')) {
-                button.classList.remove('bi-heart')
-                button.classList.add('bi-heart-fill')
-                likeButtonText.textContent = parseInt(likeButtonText.textContent) + 1
-            } else if(button.classList.contains('bi-heart-fill')) {
-                button.classList.remove('bi-heart-fill')
-                button.classList.add('bi-heart')
-                likeButtonText.textContent = parseInt(likeButtonText.textContent) - 1
+            if(icon.classList.contains('bi-heart')) {
+
+                icon.classList.remove('bi-heart')
+                icon.classList.add('bi-heart-fill')
+                likeCountText.textContent = parseInt(likeCountText.textContent) + 1
+
+            } else if(icon.classList.contains('bi-heart-fill')) {
+
+                icon.classList.remove('bi-heart-fill')
+                icon.classList.add('bi-heart')
+                likeCountText.textContent = parseInt(likeCountText.textContent) - 1
+
             }
 
 
