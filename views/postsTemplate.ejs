@@ -102,9 +102,16 @@
                     
                     <!-- Buttons section -->
                     <div class="button-section">
-                        <button class="btn btn-outline-primary btn-sm " onclick="likeHandler('<%=blog._id%>')"><i class="likeButton bi bi-heart"><span class="likeButtonText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
-                        <button class="btn btn-outline-primary btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')"><i class="bi bi-chat-left-dots"><span class="ms-2" style="font-style: normal; font-size: large;"><%=blog.comments.length%></span></i></button>
+                        
+                        <%// checking whether the current user has already liked the blog (for showing the active like button)%>
+                        <%if(blog.likes.includes(data.currentUser.userId)) {%>
+                            <button class="btn btn-outline-primary btn-sm " onclick="likeHandler('<%=blog._id%>')"><i class="likeButton bi bi-heart-fill"><span class="likeButtonText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
+                        <%} else {%> <%// shows inactive like button%>
+                            <button class="btn btn-outline-primary btn-sm " onclick="likeHandler('<%=blog._id%>')"><i class="likeButton bi bi-heart"><span class="likeButtonText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
+                        <%}%>
 
+                        <button class="btn btn-outline-primary btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')"><i class="bi bi-chat-left-dots"><span class="ms-2" style="font-style: normal; font-size: large;"><%=blog.comments.length%></span></i></button>
+                        
                         <!-- Checking whether author of a blog is logged in  -->
                         <%if(data.currentUser.userId === blog.author._id.toString()){%>
                             <a href="/post/editBlog/<%=blog._id%>"><button class="btn btn-outline-primary btn-md"><i class="bi bi-pencil-square"></i></button></a>
