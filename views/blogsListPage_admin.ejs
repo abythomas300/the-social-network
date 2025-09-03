@@ -234,19 +234,25 @@
 
                           <%blog.comments.forEach(function(comment){%>
 
-                              <div class="comment-box p-3 mb-2 rounded shadow-sm bg-light">
-                                  <div class="d-flex align-items-center justify-content-start">
-                                      <% // User Profile Picture %>
-                                       <img src="https://avatar.iran.liara.run/username?username=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
-                                       <div class="d-flex align-items-center justify-content-start">
-                                          <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
-                                       </div>
+                              <!-- Comment Card -->
+                              <div class="comment-card comment-box p-3 mb-2 rounded shadow-sm bg-light">
+                                <div class="comment-card-header d-flex align-items-center justify-content-between">
+                                  <div class="comment-metadata d-flex ">
+                                    <div class="metadata-content d-flex">
+                                      <img src="https://avatar.iran.liara.run/username?username=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
+                                      <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
+                                    </div>
                                   </div>
-                                  <% // Comment Content %>
-                                  <div class="mt-0">
-                                      <p class="mt-2"><%=comment.content%></p>
+                                  <div class="comment-delete-button d-flex align-items-center">
+                                    <button class="btn btn-md"><i class="bi bi-trash3 comment-delete-icon" style="color: #6c757d;"></i></button>
                                   </div>
+                                </div>
+                                <div class="comment-body">
+                                  <p class="mt-2"><%=comment.content%></p>
+                                </div>
+                                
                               </div>
+
 
                           <%})%>
 
@@ -329,6 +335,22 @@
                 commentSection.style.display = 'none'
             }
         }
+
+        // changing delete button color on mouse hover
+        const commentDeleteButton = document.querySelectorAll('.comment-delete-icon')
+        console.log("delete button node list: ", commentDeleteButton)
+        commentDeleteButton.forEach(function(dltButton){
+          dltButton.addEventListener('mouseover', function(e){
+            // dltButton.classList.add('text-danger')
+            // dltButton.classList.remove('text-muted')
+            dltButton.style.color = 'red'
+          })
+          dltButton.addEventListener('mouseout', function(e){
+            // dltButtonc.classList.remove('text-danger')
+            // dltButtonc.classList.add('text-muted')
+            dltButton.style.color = '#6c757d'
+          })
+        })
 
     </script>
     
