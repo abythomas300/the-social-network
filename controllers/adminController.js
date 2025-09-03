@@ -70,7 +70,29 @@ async function showBlogEditPage(req, res) {
 }
 
 
+async function deleteComment(req, res) {
 
+    // checking whether the request is from admin itself
+    if(req.session.user.role === 'admin') {
+
+        try{
+            const blogId = req.params.blogId
+            const commentIdToDelete = req.body.commentId
+            const deletedComment = await postModel.findOneAndUpdate({_id: blogId}, {$pull: {comments: {_id: commentIdToDelete}}}, {new: true})
+            console.log("👍Comment Deleted")
+            console.log("Deleted Comment Details: ", deletedComment)
+            req.flash('success', 'Comment Deletion Success')
+            res.redirect('/admin/blogInfo')
+        }
+        catch(error) {
+            console.log("Comment Deletion Failed, reason: ", error)
+        }
+
+    } else {
+        res.send("Warning: You have no permission to do this action.")
+    }
+
+}
 
 
 // exporting methods
@@ -78,5 +100,6 @@ module.exports = {
     displayAdminHomepage, 
     displayUsersList,
     displayAllBlogs,
-    showBlogEditPage
+    showBlogEditPage,
+    deleteComment
 }

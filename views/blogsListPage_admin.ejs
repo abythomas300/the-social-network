@@ -244,7 +244,10 @@
                                     </div>
                                   </div>
                                   <div class="comment-delete-button d-flex align-items-center">
-                                    <button class="btn btn-md"><i class="bi bi-trash3 comment-delete-icon" style="color: #6c757d;"></i></button>
+                                    <form action="/admin/deleteComment/<%=blog._id%>?_method=DELETE" method="post">
+                                      <input type="text" name=commentId value="<%=comment._id%>"  style="display: none;">
+                                      <button type="submit" class="btn btn-md"><i class="bi bi-trash3 comment-delete-icon" style="color: #6c757d;"></i></button>
+                                    </form>
                                   </div>
                                 </div>
                                 <div class="comment-body">
