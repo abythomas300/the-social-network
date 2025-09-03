@@ -14,10 +14,11 @@ async function registerUser(req, res) {
         // getting credentials from user's request
         const username = req.body.username
         const password = req.body.password
+        const emailAddress = req.body.email
 
         // encrypting password
         const hashString = await bcrypt.hash(password, 10)   
-        const newUser = new userModel({username: username, password: hashString}) // creating user model object
+        const newUser = new userModel({username: username, password: hashString, email: emailAddress}) // creating user model object
         await newUser.save()  // passing user model object to mongoose to create new document in DB
         console.log('Registraton Successful')
         req.flash('success', 'Registration Successful')
