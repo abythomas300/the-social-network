@@ -12,7 +12,7 @@ async function displayAllBlogs(req, res) {
 
     try{
 
-        const allBlogs = await postModel.find({}).populate('author')
+        const allBlogs = await postModel.find({}).populate([{path: 'author'}, {path: 'comments.commentAuthor'}])
         const blogsCount = await postModel.countDocuments({}) // taking count of all available blogs in DB
         const allUsers = await userModel.find({})
         const usersCount = await userModel.countDocuments({})

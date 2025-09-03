@@ -48,6 +48,22 @@
             height: 100%;
             object-fit: cover;     /* to keep image in a fixed ratio - irrespective of the image dimention */
         }
+
+        .comment-box {
+          border: 1px solid #dee2e6;
+        }
+
+        @media (max-width: 600px) {
+          .comment-box{
+            width: 100%;
+          }
+        }
+        @media (min-width: 601px) {
+          .comment-box {
+            width: 75%;
+          }
+        }
+
     </style>
 </head>
 
@@ -186,7 +202,7 @@
                         <i class="bi bi-heart "></i>
                         <span style="font-style: normal; font-size: large;"> <%=blog.likes.length%></span>
                       </button>
-                      <button class="btn btn-outline-danger btn-sm">
+                      <button class="btn btn-outline-danger btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')">
                         <i class="bi bi-chat-left-dots"></i>
                         <span style="font-style: normal; font-size: large;"> <%=blog.comments.length%></span>
                       </button>
@@ -203,6 +219,48 @@
                     <!-- Collapse button at right -->
                     <button class="btn btn-outline-danger collapse-btn"><i class="bi bi-arrow-up-square-fill text-danger h5"></i></button>
                   </div>
+
+
+
+                <!-- Comment Section -->
+                <div class="comments-section mt-4" id="comments-<%=blog._id%>" style="display: none;">
+
+                  <div class="comment-box-wrapper">
+                      <!-- Comments heading -->
+                      <h5 class="fw-bold mb-3">Comments</h5>
+                      
+                      <!-- Displaying each comment inside this blog -->
+                      <%if(blog.comments.length > 0){%>
+
+                          <%blog.comments.forEach(function(comment){%>
+
+                              <div class="comment-box p-3 mb-2 rounded shadow-sm bg-light">
+                                  <div class="d-flex align-items-center justify-content-start">
+                                      <% // User Profile Picture %>
+                                       <img src="https://avatar.iran.liara.run/username?username=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
+                                       <div class="d-flex align-items-center justify-content-start">
+                                          <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
+                                       </div>
+                                  </div>
+                                  <% // Comment Content %>
+                                  <div class="mt-0">
+                                      <p class="mt-2"><%=comment.content%></p>
+                                  </div>
+                              </div>
+
+                          <%})%>
+
+                      <%}else{%>
+
+                          <p class="text-muted fst-italic">No comments yet. Be the first to comment!</p>
+                          
+                      <%}%>
+
+                  </div>
+
+                </div>
+
+
                   <hr>
                 </div>
               
@@ -257,6 +315,20 @@
             blogItem.querySelector(".layout-1").classList.add("layout-active");
           });
         });
+
+
+        // method to toggle comment section
+        function toggleCommentSection(sectionId) {
+          console.log("Comment section clicked ******************** SECTION ID: ", sectionId)
+            const commentSection = document.getElementById(sectionId)
+            if(commentSection.style.display === 'none') {
+              console.log("comment section is hidden")
+                commentSection.style.display = 'block'
+            } else {
+              console.log("comment section is NOT hidden")
+                commentSection.style.display = 'none'
+            }
+        }
 
     </script>
     
