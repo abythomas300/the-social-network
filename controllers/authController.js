@@ -2,10 +2,12 @@ const userModel = require('../models/user')
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 
+
 // method to show registration page to user
 function displayRegistrationPage(req, res) {
     res.render('registrationPage')
 }
+
 
 // method to handle user registration 
 async function registerUser(req, res) {
@@ -18,18 +20,20 @@ async function registerUser(req, res) {
 
         // encrypting password
         const hashString = await bcrypt.hash(password, 10)   
+        
+        // saving email, username and password to DB
         const newUser = new userModel({username: username, password: hashString, email: emailAddress}) // creating user model object
         await newUser.save()  // passing user model object to mongoose to create new document in DB
-        console.log('Registraton Successful')
-        req.flash('success', 'Registration Successful')
-        res.redirect('/login')  // redirecting users to login pagefea
+        console.log('Email, Username and Password saved to DB successfully')
+        res.render('otpPage_user', {email: emailAddress})  // redirecting users to login pagefea
     }
     catch(error){
-        console.log("Registration Failed, reason: ", error)
-        res.send("Registration Failed")
+        console.log("Email, Username and Password saving FAILED, reason: ", error)
+        res.send("ERROR in saving Email, Username and Password, Try again later.")
     }
 
 }
+
 
 // method to handle login user
 async function loginUser(req, res) {
