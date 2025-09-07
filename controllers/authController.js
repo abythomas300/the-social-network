@@ -1,6 +1,20 @@
 const userModel = require('../models/user')
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
+const otplib = require('otplib')
+const nodemailer = require('nodemailer')
+
+
+// nodemailer initialization
+const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: false,  
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    },
+})
 
 
 // method to show registration page to user
@@ -13,23 +27,52 @@ function displayRegistrationPage(req, res) {
 async function registerUser(req, res) {
 
     try {
+
         // getting credentials from user's request
         const username = req.body.username
         const password = req.body.password
         const emailAddress = req.body.email
 
-        // encrypting password
-        const hashString = await bcrypt.hash(password, 10)   
+        const authenticator = otplib.authenticator
+        const secretKey = process.env.OTPLIB_SECRET_KEY
         
-        // saving email, username and password to DB
-        const newUser = new userModel({username: username, password: hashString, email: emailAddress}) // creating user model object
+        // generating OTP
+        const generatedOTP = authenticator.generate(secretKey)
+        
+        // encrypting password and OTP
+        const passwordHash = await bcrypt.hash(password, 10)
+        const OTPHash = await bcrypt.hash(generatedOTP, 10)
+        
+        // saving email, username, password and generated OTP to DB
+        const newUser = new userModel({username: username, password: passwordHash, email: emailAddress, otp: OTPHash}) // creating user model object
         await newUser.save()  // passing user model object to mongoose to create new document in DB
-        console.log('Email, Username and Password saved to DB successfully')
-        res.render('otpPage_user', {email: emailAddress})  // redirecting users to login pagefea
+        console.log('Email, Username, Password(hash), Generated OTP(hash) saved to DB successfully')
+
+        // sending mail
+        const senderName = "The Social Network"
+        console.log("Sending mail to SMTP server ......")
+        const start = performance.now()
+        const info = await transporter.sendMail({
+            from: `"${senderName}" <${process.env.EMAIL_SENDER}>`,
+            to: emailAddress,
+            subject: 'OTP for Account Creation for The Social Network',
+            text: `Your One Time Password (OTP) for creating an account in The Social Network is ${generatedOTP}. Your code only vaild for 2 minutes and do not share it with anyone else.`,
+            html: `Your One Time Password (<b>OTP</b>) for creating an account in The Social Network is <b> ${generatedOTP} </b>. Your code only <b> vaild for 2 minutes </b> and do not share it with anyone else.`
+        })
+        const end = performance.now()
+        const timeTaken = (end - start) / 1000
+        console.log("OTP Mail sent to SMTP server 📧")
+        console.log(`Time taken to send mail:  ${Math.round(timeTaken)}s`)
+        console.log("Message ID: ", info.messageId)
+
+        res.render('otpPage_user', {email: emailAddress})  // redirecting users to login page
+
     }
     catch(error){
-        console.log("Email, Username and Password saving FAILED, reason: ", error)
-        res.send("ERROR in saving Email, Username and Password, Try again later.")
+
+        console.log("Error in registration, reason: ", error)
+        res.send("Error in Registration. Try again later.")
+
     }
 
 }
