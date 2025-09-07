@@ -23,9 +23,13 @@ const userSchema = new mongoose.Schema({
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Invalid Email Format']
     } ,
     otp: {
-        type: Number
+        type: String,
     },
-    verified: {
+    otpGeneratedAt: {
+        type: Date,
+        default: Date.now
+    },
+    isVerified: {
         type: Boolean,
         default: false
     } 
