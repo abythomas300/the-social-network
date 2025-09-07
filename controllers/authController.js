@@ -55,9 +55,9 @@ async function registerUser(req, res) {
         const info = await transporter.sendMail({
             from: `"${senderName}" <${process.env.EMAIL_SENDER}>`,
             to: emailAddress,
-            subject: 'OTP for Account Creation for The Social Network',
+            subject: 'OTP for Account Creation',
             text: `Your One Time Password (OTP) for creating an account in The Social Network is ${generatedOTP}. Your code only vaild for 2 minutes and do not share it with anyone else.`,
-            html: `Your One Time Password (<b>OTP</b>) for creating an account in The Social Network is <b> ${generatedOTP} </b>. Your code only <b> vaild for 2 minutes </b> and do not share it with anyone else.`
+            html: `Welcome to The Social Network, you are one verification away from creating your account. <br><br> Your One Time Password (<b>OTP</b>) for creating an account in The Social Network is <b> ${generatedOTP} </b>. Your code only <b> vaild for 2 minutes </b> and do not share it with anyone else.`
         })
         const end = performance.now()
         const timeTaken = (end - start) / 1000
