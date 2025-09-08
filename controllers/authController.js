@@ -118,11 +118,24 @@ async function otpCheck(req, res) {
             } else {  // If OTPs are not same
 
                 console.log("OTP does not match ❌")
+
+                // deleting saved user details from DB
+                await userModel.findByIdAndDelete(userDetails._id)
+                console.log("Saved user data cleared from DB")
+
                 res.send("OTP Does not Match, Try again later.")
 
             }
 
         } else {  // If OTP is not entered within 2 minutes
+
+            console.log("⌛OTP has been expired (2 minutes passed)")
+
+            const user = await userModel.findById(userDetails._id)
+
+            // deleting saved user details from DB
+            await userModel.findByIdAndDelete(userDetails._id)
+            console.log("Document cleared from DB")
 
             res.send("OTP has expired, Try again.")
 
