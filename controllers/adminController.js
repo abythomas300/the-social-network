@@ -47,8 +47,15 @@ async function displayUsersList(req, res) {
     try{
 
         const allUsers = await userModel.find({})
-        console.log(allUsers)
-        res.render('usersListPage_admin', {userInfo: allUsers})
+
+        const successMessage = req.flash('success')
+
+        const data = {
+            users: allUsers,
+            message: successMessage
+        }
+
+        res.render('usersListPage_admin', {data: data})
 
     }catch(error){
 
@@ -95,11 +102,35 @@ async function deleteComment(req, res) {
 }
 
 
+async function deleteUser(req, res) {
+
+    try{
+
+        console.log("REQUEST BODY*************", req.body)
+        const deletedUser = await userModel.findOneAndDelete({username: req.body.username})
+        console.log("User Deleted: ", deletedUser)
+
+        // creating a flash message
+        req.flash('success', 'User Deletion Success')
+
+        res.redirect('/admin/userInfo')
+    }
+    catch(error) {
+
+        console.log("Error in deleting user, reason: ", error)
+        res.send("Cannot delete user, try again later.")
+
+    }
+}
+
+
+
 // exporting methods
 module.exports = {
     displayAdminHomepage, 
     displayUsersList,
     displayAllBlogs,
     showBlogEditPage,
-    deleteComment
+    deleteComment,
+    deleteUser
 }
