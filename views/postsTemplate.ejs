@@ -135,10 +135,17 @@
                                     <div class="comment-box p-3 mb-2 rounded shadow-sm bg-light">
                                         <div class="d-flex align-items-center justify-content-start">
                                             <% // User Profile Picture %>
-                                             <img src="https://avatar.iran.liara.run/username?username=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
-                                             <div class="d-flex align-items-center justify-content-start">
-                                                <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
-                                             </div>
+                                             <%if(comment.commentAuthor) {%> <%// checking whether user exitst (when reference object is not null)%>
+                                                <img src="https://avatar.iran.liara.run/username?username=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
+                                                <div class="d-flex align-items-center justify-content-start">
+                                                    <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
+                                                </div>
+                                             <%} else {%>  <%// when user does not exist%>
+                                                <img src="https://avatar.iran.liara.run/username?username=d" class="rounded-circle" width="40" height="40">
+                                                <div class="d-flex align-items-center justify-content-start">
+                                                    <span class="fw-bold fst-italic mx-2">deleted user</span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
+                                                </div>
+                                             <%}%> 
                                         </div>
                                         <% // Comment Content %>
                                         <div class="mt-0">
