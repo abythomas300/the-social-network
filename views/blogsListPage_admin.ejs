@@ -244,7 +244,7 @@
                                         <img src="https://avatar.iran.liara.run/username?username=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
                                         <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
                                       <%} else {%>
-                                        <img src="https://avatar.iran.liara.run/username?username=d" class="rounded-circle" width="40" height="40">
+                                        <img src="/images/no_profile_picture_placeholder.png" class="rounded-circle" width="40" height="40">
                                         <span class="fw-bold fst-italic mx-2">Deleted User</span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>  
                                       <%}%>
                                     </div>
