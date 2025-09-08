@@ -78,6 +78,67 @@ async function registerUser(req, res) {
 }
 
 
+async function otpCheck(req, res) {
+
+    try{
+        
+        const otpEnteredTime = new Date()
+
+        const emailAddress = req.body.email
+        const userEnteredOTP = req.body.otp
+
+        console.log("Email Address Got From Form: ", emailAddress)
+        console.log("OTP Got From Form: ", userEnteredOTP)
+
+        const userDetails = await userModel.findOne({email: emailAddress})
+        console.log("Respective User Details Fetched: ", userDetails)
+
+        // checking whether otp timer has expired
+        // if otp is entered within 2 minutes
+        if((otpEnteredTime - userDetails.otpGeneratedAt) <= 120000) {  // OTP expiry set to 2 minutes
+
+            console.log("OTP submission is on time ⌚👍")
+            // comparing otps
+            const isMatch = await bcrypt.compare(userEnteredOTP, userDetails.otp)
+
+            // If both OTPs are the same
+            if(isMatch) {
+
+                console.log("OTP Matches ✅")
+                // setting the verified field to 'true'
+                const modifiedUserDocument = await userModel.findByIdAndUpdate(userDetails._id, {$set: {isVerified: true}}, {new: true})
+                console.log("isVerified field updated ✅ --> ", modifiedUserDocument)
+
+                // creating flash message
+                req.flash('success', 'Registraion Successful.')
+
+                // redirecting user to login page
+                res.redirect('/login')
+
+            } else {  // If OTPs are not same
+
+                console.log("OTP does not match ❌")
+                res.send("OTP Does not Match, Try again later.")
+
+            }
+
+        } else {  // If OTP is not entered within 2 minutes
+
+            res.send("OTP has expired, Try again.")
+
+        }
+
+    }
+    catch(error) {
+
+        res.send("There was an error verifying the OTP, try again later.")
+        console.log("Error in OTP check, reason: ", error)
+
+    }
+
+
+}
+
 // method to handle login user
 async function loginUser(req, res) {
 
@@ -164,5 +225,6 @@ module.exports = {
     displayRegistrationPage,
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    otpCheck
 }

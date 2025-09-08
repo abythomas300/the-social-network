@@ -47,11 +47,11 @@
               <label class="form-label mb-5">We have sent an OTP to <span class="fw-bold"><%=email%></span>, check your mail box.</label>
               
               <%// OTP entering form%>
-              <form action="" method="post">
+              <form action="/register/otpCheck" method="post">
                 <div class="mb-3">
                   <label for="otp" class="form-label">Enter the 6-digit OTP</label>
-                  <input type="text" class="form-control otp-input mb-5" id="otp" maxlength="6" placeholder="------" required>
-                  <input type="text" class="d-none" value="<%= email%>">
+                  <input type="text" class="form-control otp-input mb-5" id="otp" name="otp" maxlength="6" placeholder="------" required>
+                  <input type="text" class="d-none" value="<%= email%>" name="email">
                 </div>
                 <div class="d-grid">
                   <button type="submit" class="btn btn-primary btn-lg">Submit</button>
