@@ -14,7 +14,6 @@ async function displayAllBlogs(req, res) {
 
         const allBlogs = await postModel.find({}).populate([{path: 'author'}, {path: 'comments.commentAuthor'}])
         const blogsCount = await postModel.countDocuments({}) // taking count of all available blogs in DB
-        const allUsers = await userModel.find({})
         const usersCount = await userModel.countDocuments({})
 
         // fetching flash messages passed to this route
@@ -124,6 +123,32 @@ async function deleteUser(req, res) {
 }
 
 
+async function restrictUser(req, res) {  
+
+    const userDetails = await userModel.findOne({username: req.body.username})
+
+    if(userDetails.isRestricted === false) {
+
+        const updatedDocument = await userModel.findOneAndUpdate({username: req.body.username}, {$set: {isRestricted: true} }, {new: true})
+        console.log(`Restriction for user ${req.body.username} applied successfully`)
+        console.log("Updated user document: ", updatedDocument)
+
+        req.flash('success', 'User restriction successful')
+
+        res.redirect('/admin/userInfo')
+
+    } else {
+
+        const updatedDocument = await userModel.findOneAndUpdate({username: req.body.username}, {$set: {isRestricted: false} }, {new: true})
+        console.log(`Restriction for user ${req.body.username} removed successfully`)
+
+        req.flash('success', 'User restriction removed successfully')
+
+        res.redirect('/admin/userInfo')
+    }
+
+}
+
 
 // exporting methods
 module.exports = {
@@ -132,5 +157,6 @@ module.exports = {
     displayAllBlogs,
     showBlogEditPage,
     deleteComment,
-    deleteUser
+    deleteUser,
+    restrictUser
 }

@@ -32,7 +32,11 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
-    } 
+    },
+    isRestricted: {
+        type: Boolean,
+        default: false
+    }
 },
 {
     timestamps: true  // to automatically add created and updated time to db

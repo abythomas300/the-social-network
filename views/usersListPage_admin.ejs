@@ -71,14 +71,39 @@
                     <td style="width: 50px; height: 50px;"><img src="https://avatar.iran.liara.run/username?username=<%=user.username%>" width="50" height="50" class="rounded-circle me-2"></td>
                     <td><%=user.username%></td>
                     <td><%=user.role%></td>
-                    <td><span class="badge bg-success">Active</span></td>
-                    <td><%=dateConversion(user.createdAt.toISOString().substring(0,10))%></td>
+
+                    <% // User status %>
                     <td>
-                      <form action="/admin/deleteUser?_method=DELETE" method="post">
-                        <input type="text" class="d-none" value="<%=user.username%>" name="username">
-                        <button class="btn btn-sm btn-primary">Restrict</button>
-                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
-                      </form>
+                      <%if(user.isRestricted === false) {%>
+                        <span class="badge bg-success">Good</span>
+                      <%} else {%>
+                        <span class="badge bg-warning">Restricted</span>
+                      <%}%>
+                    </td>
+
+                    <td><%=dateConversion(user.createdAt.toISOString().substring(0,10))%></td>
+
+                    <% // Restrict/Unrestrict , delete buttons %>
+                    <td>
+                      <div class="d-flex gap-2 mx-0">
+                        <%if(user.isRestricted === false){%>
+                          <form action="/admin/restrictUser" method="post">
+                            <input type="text" class="d-none" value="<%=user.username%>" name="username">
+                            <button class="btn btn-sm btn-primary" type="submit">Restrict</button>
+                          </form>
+                        <%} else {%>
+                          <form action="/admin/restrictUser" method="post">
+                            <input type="text" class="d-none" value="<%=user.username%>" name="username">
+                            <button class="btn btn-sm btn-success" type="submit">Unrestrict</button>
+                          </form>
+                        <%}%>
+  
+                        <form action="/admin/deleteUser?_method=DELETE" method="post">
+                          <input type="text" class="d-none" value="<%=user.username%>" name="username">
+                          <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                        </form>
+                      </div>
+
                     </td>
                   </tr>
                 </tbody>
@@ -94,7 +119,13 @@
                         </div>
                       </div>
                       <div class="mt-3">
-                        <span class="badge bg-success">Active</span>
+                        
+                        <%if(user.isRestricted === false) {%>
+                          <span class="badge bg-success">Good</span>
+                        <%} else {%>
+                          <span class="badge bg-warning">Restricted</span>
+                        <%}%>
+
                         <span class="badge bg-secondary"><%=user.role%></span>
                         <small class="d-block mt-1">Signup Date  <%= dateConversion(user.createdAt.toISOString().substring(0,10)) %></small>
                         <div class="mt-2">
