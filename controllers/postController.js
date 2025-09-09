@@ -11,11 +11,10 @@ async function getAllPosts(req, res){
     if(allPosts.length === 0){  // if there is no data in DB (ie. 'allPosts' is empty)
         res.send('<h3 style="text-align:center; font-size: 2.5em; color:blue"><i>The Social Network</i></h3> <p>All posts will appear here, no new posts for now. </p>')
     } else {
-        const successMessage = req.flash('success')  
-        console.log("Flash message (success) in postController: ", successMessage)
+        // const successMessage = req.flash('success')  
+        // console.log("Flash message (success) in postController: ", successMessage)
 
         const data = {    // combining data fetched from DB and flash message into one single object so that it can be passed to view
-            message: successMessage,
             blogs: allPosts,
             currentUser: req.session.user
         }
@@ -39,17 +38,24 @@ async function createNewPost(req, res) {
         console.log("Requested User Id", req.session.user.userId)
         console.log("Requested User name", req.session.user.username)
         console.log("Requested User role", req.session.user.userId)
+
         const newPost = new postModel({title: req.body.title, content: req.body.content, author: req.session.user.userId, thumbnail: req.file.filename})
+        
         console.log("Saving post to DB ...")
-        await newPost.save() // saving the post to 'posts' collection in DB
-        console.log("Post created Successfully")
+        await newPost.save() 
+        
+        console.log("Blog created Successfully")
         console.log("Uploaded File Details: ", req.file)
-        req.flash('success', 'Blog post created successfully')
-        res.redirect('/post')  // redirecting user to blogs page after creating a post
+
+        req.flash('success', 'Blog uploaded successfully')
+
+        res.redirect('/post')  
     }
     catch(error){
         console.log("Post Creation Failed, reason: ", error)
-        res.send("Post Creation Failed")
+        req.flash('failure', 'Cannot upload your blog, try again later')
+
+        res.redirect('/post')
     }
 }
 
@@ -67,7 +73,8 @@ async function deletePost(req, res) {
             console.log("Blog deletion request from: ", req.session.user)
             const deletedPost = await postModel.findByIdAndDelete(postIdToRemove)
             console.log("Deleted Blog Details:", deletedPost)
-            req.flash('success', 'Blog post deleted successfully')
+
+            req.flash('success', 'Blog deleted successfully')
             
             // redirecting based on role
             const role = req.session.user.role
@@ -75,13 +82,17 @@ async function deletePost(req, res) {
 
         }else{
             console.log("Current user id and Blog author id does not match")
-            res.send("You cannot delete someone else's post")
+            req.flash('failure', 'Cannot delete blog, try again later')
+
+            res.redirect('/post')
         }
         
     }
     catch(error){
         console.log("Post Deletion Failed, reason: ", error)
-        res.send("Post Deletion Failed.")
+        req.flash('failure', 'Cannot delete blog, try again later')
+
+        res.redirect('/post')
     }
 
 }
@@ -90,16 +101,23 @@ async function deletePost(req, res) {
 async function showBlogEditPage(req, res) {
 
     try{
-        console.log("Request flow reached controller, view on standby")
+
         const blogIdToDelete = req.params.blogId
         console.log("Blog Id: ", blogIdToDelete)
+
         const entireBlog = await postModel.findById(blogIdToDelete)
         console.log("The Entire Blog to be updated--> ", entireBlog)
+
         res.render('editBlogPage', {previousBlog: entireBlog})
 
     }catch(error){
+
         console.log("Error showing blog edit page, reason: ", error)
-        res.send("Error displaying blog edit page")
+
+        req.flash('failure', 'Cannot display blog editing page, try again later')
+
+        res.redirect('/post')
+
     }
 
 }
@@ -123,7 +141,8 @@ async function updatePost(req, res) {
             const updatedData = await postModel.findByIdAndUpdate(req.params.blogId, newData, {new: true})
             console.log("Data Updated")
             console.log("Printing Updated Data ", updatedData)
-            req.flash('success', 'Blog post updated successfully')
+
+            req.flash('success', 'Blog updated successfully')
             
             //redirecting based on role
             const role = req.session.user.role
@@ -132,14 +151,18 @@ async function updatePost(req, res) {
         } else {
 
             console.log("Current user id and Blog author id does not match")
-            res.send("Cannot edit someone else's blog post")
+            req.flash('info', "Warning: You cannot modify someone else's blog")
+
+            res.redirect('/post')
 
         }
 
     }
     catch(error){
         console.log("Post Updation Failed, reason: ", error)
-        res.send("Post Updation Failed")
+        req.flash('failure', 'Blog edit failed, try again later')
+
+        res.redirect('/post')
     }
 
 }
@@ -187,18 +210,30 @@ async function likeBlog(req, res) {
 
 async function addComment(req, res) {
 
-    const commentContent = req.body.comment
-    const blogId = req.params.blogId
-    const commentAuthor = req.session.user.userId
+    try{
 
-    console.log("Comment content: ", commentContent)
-    console.log("Blog id: ", blogId)
-    console.log("Commented by: ", commentAuthor)
+        const commentContent = req.body.comment
+        const blogId = req.params.blogId
+        const commentAuthor = req.session.user.userId
 
-    const updatedData = await postModel.findByIdAndUpdate(blogId, {$addToSet: {comments: {commentAuthor:commentAuthor, content: commentContent } } }, {new:true})
-    console.log("Updated Data: ", updatedData)
+        console.log("Comment content: ", commentContent)
+        console.log("Blog id: ", blogId)
+        console.log("Commented by: ", commentAuthor)
 
-    res.redirect('/post')
+        const updatedData = await postModel.findByIdAndUpdate(blogId, {$addToSet: {comments: {commentAuthor:commentAuthor, content: commentContent } } }, {new:true})
+        console.log("Updated Data: ", updatedData)
+
+        req.flash('success', 'Comment Added')
+
+        res.redirect('/post')
+    }
+    catch(error){
+
+        console.log("Cannot create comment, reason: ", error)
+        req.flash('failure', 'Cannot upload comment, try again later')
+
+        res.redirect('/post')
+    }
 
 }
 

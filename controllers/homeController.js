@@ -11,11 +11,7 @@ function welcomeMessage(req, res){
 }
 
 function loginPage(req, res) {
-    
-    const successMessage = req.flash('success')
-    console.log("Flash Message: ", successMessage)
-    res.render('loginPage', {message: successMessage})
-
+    res.render('loginPage')
 }
 
 

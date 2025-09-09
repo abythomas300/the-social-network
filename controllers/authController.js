@@ -71,7 +71,9 @@ async function registerUser(req, res) {
     catch(error){
 
         console.log("Error in registration, reason: ", error)
-        res.send("Error in Registration. Try again later.")
+        req.flash('failure', 'Registration Error, try again later')
+
+        res.redirect('/register')
 
     }
 
@@ -123,7 +125,9 @@ async function otpCheck(req, res) {
                 await userModel.findByIdAndDelete(userDetails._id)
                 console.log("Saved user data cleared from DB")
 
-                res.send("OTP Does not Match, Try again later.")
+                req.flash('failure', 'Registration failed, OTP Does not match.')
+
+                res.redirect('/register')
 
             }
 
@@ -137,7 +141,9 @@ async function otpCheck(req, res) {
             await userModel.findByIdAndDelete(userDetails._id)
             console.log("Document cleared from DB")
 
-            res.send("OTP has expired, Try again.")
+            req.flash('failure', 'Registration failed, OTP Expired.')
+
+            res.redirect('/register')
 
         }
 
@@ -184,27 +190,36 @@ async function loginUser(req, res) {
                 console.log(`UserName: ${req.session.user.username}`)
                 console.log(`User's Role: ${req.session.user.role}`)
 
-                req.flash('success', 'You have successfuly logged in.')  // creating a flash message
+                req.flash('success', 'Login Successful')  // creating a flash message
                 
                 // redirecting based on role
                 const role = req.session.user.role
                 role === 'admin'? res.redirect('/admin/blogInfo'): res.redirect('/post') 
 
             } else {
+
                 console.log("Passwords Does Not Match")
-                res.send("Wrong Password")
+                req.flash('failure', 'Wrong Password')
+
+                res.redirect('/login')
             }
 
         } else {
+
             console.log("Cannot find user with that username")
-            res.send("Cannot find an account. Sign Up to create an account.")
+            req.flash('failure', 'User not found')
+
+            res.redirect('/login')
+            
         }
-
-
     }
     catch(error) {
+
         console.log("Login process failed, reason:", error)
-        res.send("Login Failed")
+        req.flash('faliure', 'Cannot Login, Try again later')
+
+        res.redirect('/login')
+
     }
 
 }
@@ -229,6 +244,9 @@ async function logoutUser(req, res){
 
     }catch(err){
         console.log("Logout Error, reason: ", err)
+        req.flash('failure', 'Logout failed')
+
+        res.redirect('/post')
     }
 }
 

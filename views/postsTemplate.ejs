@@ -53,17 +53,37 @@
         return dateInDMY;
     }%>
 
-
-    <%if(data.message.length > 0) {%>
-
+    <% // For success flash messages %>
+    <%if(flashMessages.success && flashMessages.success.length > 0) {%>
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
           <div id="liveToast" class="toast" role="alert" >
             <div class="toast-body bg-success bg-gradient text-white">
-              <%=data.message%>
+              <%=flashMessages.success%>
             </div>
           </div>
         </div>
+    <%}%>
 
+    <% // For faluire flash messages %>
+    <%if(flashMessages.failure && flashMessages.failure.length > 0) {%>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+          <div id="liveToast" class="toast" role="alert" >
+            <div class="toast-body bg-danger bg-gradient text-white">
+              <%=flashMessages.failure%>
+            </div>
+          </div>
+        </div>
+    <%}%>
+
+    <% // For warning or info flash messages %>
+    <%if(flashMessages.info && flashMessages.info.length > 0) {%>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+          <div id="liveToast" class="toast" role="alert" >
+            <div class="toast-body bg-warning bg-gradient text-white">
+              <%=flashMessages.info%>
+            </div>
+          </div>
+        </div>
     <%}%>
 
     <%- include('partials/_header') %>

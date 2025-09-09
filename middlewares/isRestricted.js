@@ -1,16 +1,17 @@
 const userModel = require('../models/user')
 
-async function isRestricted(req, res) {
+async function isRestricted(req, res, next) {
 
     const userDetails = await userModel.findOne({username: req.session.user.username})
     
     if(userDetails.isRestricted === false) {
-        console.log(`Action request from user ${userDetails.username} blocked`)
+        console.log(`Action request from user ${userDetails.username} allowed`)
         next()
     } else {
-        req.flash('faluire', 'Access Denied')
+        console.log(`Action request from user ${userDetails.username} blocked. Reason: Restricted User`)
+        req.flash('failure', 'Access Denied')
         
-        res.send("Access Denied. \n You cannot perform this action since your account is restricted.")
+        res.redirect('/post')
     }
 
 }

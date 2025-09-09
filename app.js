@@ -46,7 +46,18 @@ app.use(session({    // express-session initialization (global middleware)
     }
 }))
 
-app.use(flash())  //'connect-flash' for flash messages
+//initializing 'connect-flash' for flash messages
+app.use(flash())  
+ 
+// custom middleware for pulling all the defined flash messages by the key so that it is available to all the view templates
+app.use(function (req, res, next){  
+    res.locals.flashMessages = {
+        success: req.flash('success'),
+        failure: req.flash('failure'),
+        info: req.flash('info')
+    }
+    next()
+})
 
 // setting template engine engine
 app.set('view engine', 'ejs')
