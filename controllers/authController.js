@@ -191,6 +191,10 @@ async function loginUser(req, res) {
                 console.log(`User's Role: ${req.session.user.role}`)
 
                 req.flash('success', 'Login Successful')  // creating a flash message
+
+                if(user.isRestricted === true) {
+                    req.flash('info', 'Your account has been restricted, some features may be inaccessible.')
+                }
                 
                 // redirecting based on role
                 const role = req.session.user.role
