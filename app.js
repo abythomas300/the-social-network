@@ -49,8 +49,20 @@ app.use(session({    // express-session initialization (global middleware)
 //initializing 'connect-flash' for flash messages
 app.use(flash())  
  
-// custom middleware for pulling all the defined flash messages by the key so that it is available to all the view templates
-app.use(function (req, res, next){  
+// custom middleware for assigning data to res.locals object
+app.use(function (req, res, next){ 
+    
+    // adding user's information to res.locals
+    if(req.session.user) {
+        res.locals.currentUser = {
+            username: req.session.user.username,
+            role: req.session.user.role,
+            joinedDate: req.session.user.joinedDate,
+            restrictionStatus: req.session.user.restrictionStatus
+        }
+    }
+    
+    // pulling all the flash messages from req.flash object and storing it in res.locals.flashMessages object
     res.locals.flashMessages = {
         success: req.flash('success'),
         failure: req.flash('failure'),
