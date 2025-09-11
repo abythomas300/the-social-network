@@ -14,7 +14,7 @@ const postController = require('../controllers/postController')
 
 // route handlers
 router.get('/', isLoggedIn, postController.getAllPosts)
-router.get('/newblog', isLoggedIn, postController.showBlogCreationPage)
+router.get('/newblog', isLoggedIn, isRestricted, postController.showBlogCreationPage)
 router.post('/', isLoggedIn, isRestricted ,upload.single('blogThumbnail'), postController.createNewPost)
 router.delete('/:blogId', isLoggedIn, postController.deletePost)
 router.get('/editBlog/:blogId', isLoggedIn, postController.showBlogEditPage )
