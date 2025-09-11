@@ -9,7 +9,7 @@ async function isRestricted(req, res, next) {
         next()
     } else {
         console.log(`Action request from user ${userDetails.username} blocked. Reason: Restricted User`)
-        req.flash('failure', 'Access Denied since your account is restricted.')
+        req.flash('failure', 'Access Denied : Your account is restricted.')
         
         res.redirect('/post')
     }

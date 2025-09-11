@@ -53,12 +53,12 @@
         return dateInDMY;
     }%>
 
-    <div class="toast-container position-fixed bottom-0 end-0">
+    <div class="toast-container position-fixed bottom-0 end-0 mx-4 my-2">
 
         <% // For success flash messages %>
         <%if(flashMessages.success && flashMessages.success.length > 0) {%>
               <div class="liveToast toast p-0 my-2" role="alert" >
-                <div class="toast-body bg-success bg-gradient text-white">
+                <div class="toast-body bg-success bg-gradient text-white fw-semibold ">
                   <%=flashMessages.success%>
                 </div>
               </div>
@@ -67,7 +67,7 @@
         <% // For faluire flash messages %>
         <%if(flashMessages.failure && flashMessages.failure.length > 0) {%>
               <div class="liveToast toast p-0 my-2" role="alert" >
-                <div class="toast-body bg-danger bg-gradient text-white">
+                <div class="toast-body bg-danger bg-gradient text-white fw-semibold">
                   <%=flashMessages.failure%>
                 </div>
               </div>
@@ -76,7 +76,7 @@
         <% // For warning or info flash messages %>
         <%if(flashMessages.info && flashMessages.info.length > 0) {%>
               <div class="liveToast toast p-0 my-2" role="alert" >
-                <div class="toast-body bg-warning bg-gradient text-white">
+                <div class="toast-body bg-warning bg-gradient text-dark fw-semibold ">
                   <%=flashMessages.info%>
                 </div>
               </div>
