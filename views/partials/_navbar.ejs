@@ -3,14 +3,18 @@
     <div class="navbar-collapse justify-content-center" id="navbarNavDropdown">
         <ul class="navbar-nav d-flex w-100 justify-content-evenly">
             <li class="nav-item">
-                <a class="nav-link" href="/post">Home</a>  <!-- here 'post' means blogs page (main blog feed page) -->
+                <a class="nav-link fw-semibold" href="/post">Home</a>  <!-- here 'post' means blogs page (main blog feed page) -->
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/post/newblog">New Blog</a>
+                <%if(currentUser.restrictionStatus) {%>
+                    <a class="nav-link disabled" href="/post/newblog">New Blog</a>
+                <%} else {%>
+                    <a class="nav-link fw-semibold" href="/post/newblog">New Blog</a>
+                <%}%>
             </li>
             <li class="nav-item">
                 <form action="/logout" method="post" id="logout-form">
-                    <a class="nav-link" href="#" onclick="submitLogoutForm()">Logout</a>
+                    <a class="nav-link fw-semibold" href="#" onclick="submitLogoutForm()">Logout</a>
                 </form>
             </li>
         </ul>
