@@ -53,38 +53,37 @@
         return dateInDMY;
     }%>
 
-    <% // For success flash messages %>
-    <%if(flashMessages.success && flashMessages.success.length > 0) {%>
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-          <div id="liveToast" class="toast" role="alert" >
-            <div class="toast-body bg-success bg-gradient text-white">
-              <%=flashMessages.success%>
-            </div>
-          </div>
-        </div>
-    <%}%>
+    <div class="toast-container position-fixed bottom-0 end-0">
 
-    <% // For faluire flash messages %>
-    <%if(flashMessages.failure && flashMessages.failure.length > 0) {%>
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-          <div id="liveToast" class="toast" role="alert" >
-            <div class="toast-body bg-danger bg-gradient text-white">
-              <%=flashMessages.failure%>
-            </div>
-          </div>
-        </div>
-    <%}%>
+        <% // For success flash messages %>
+        <%if(flashMessages.success && flashMessages.success.length > 0) {%>
+              <div class="liveToast toast p-0 my-2" role="alert" >
+                <div class="toast-body bg-success bg-gradient text-white">
+                  <%=flashMessages.success%>
+                </div>
+              </div>
+        <%}%>
 
-    <% // For warning or info flash messages %>
-    <%if(flashMessages.info && flashMessages.info.length > 0) {%>
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-          <div id="liveToast" class="toast" role="alert" >
-            <div class="toast-body bg-warning bg-gradient text-white">
-              <%=flashMessages.info%>
-            </div>
-          </div>
-        </div>
-    <%}%>
+        <% // For faluire flash messages %>
+        <%if(flashMessages.failure && flashMessages.failure.length > 0) {%>
+              <div class="liveToast toast p-0 my-2" role="alert" >
+                <div class="toast-body bg-danger bg-gradient text-white">
+                  <%=flashMessages.failure%>
+                </div>
+              </div>
+        <%}%>
+
+        <% // For warning or info flash messages %>
+        <%if(flashMessages.info && flashMessages.info.length > 0) {%>
+              <div class="liveToast toast p-0 my-2" role="alert" >
+                <div class="toast-body bg-warning bg-gradient text-white">
+                  <%=flashMessages.info%>
+                </div>
+              </div>
+        <%}%>
+
+
+    </div>
 
     <%- include('partials/_header') %>
     
@@ -227,16 +226,18 @@
     <script>
     // initializing BS Toast component
     document.addEventListener('DOMContentLoaded', function() {
-    var toastElement = document.getElementById('liveToast');
-    if (toastElement) {
-      var toast = new bootstrap.Toast(toastElement); // Calling BS toast function
-      toast.show(); 
+    var toastElements = document.querySelectorAll('.liveToast');
+    toastElements.forEach(function(toastElement) {
+        if (toastElement) {
+        const toast = new bootstrap.Toast(toastElement); // Calling BS toast function
+        toast.show(); 
 
-      // Hide toast after 3 seconds 
-      setTimeout(function() {
-        toast.hide();
-      }, 5000);
-     }
+        // Hide toast after 3 seconds 
+        setTimeout(function() {
+          toast.hide();
+        }, 5000);
+        }
+    })
     });
 
 
