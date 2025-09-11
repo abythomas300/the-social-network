@@ -15,14 +15,10 @@ async function displayAllBlogs(req, res) {
         const allBlogs = await postModel.find({}).populate([{path: 'author'}, {path: 'comments.commentAuthor'}])
         const blogsCount = await postModel.countDocuments({}) // taking count of all available blogs in DB
         const usersCount = await userModel.countDocuments({})
-
-        // fetching flash messages passed to this route
-        const successMessage = req.flash('success')
         
         // adding all blogs, flash message, user count and blogs count to a saperate object for passing to view
         const data = {
             blogs: allBlogs,
-            message: successMessage,
             blogsCount: blogsCount,
             usersCount: usersCount
         }
@@ -47,11 +43,8 @@ async function displayUsersList(req, res) {
 
         const allUsers = await userModel.find({})
 
-        const successMessage = req.flash('success')
-
         const data = {
-            users: allUsers,
-            message: successMessage
+            users: allUsers
         }
 
         res.render('usersListPage_admin', {data: data})
@@ -87,7 +80,7 @@ async function deleteComment(req, res) {
             const deletedComment = await postModel.findOneAndUpdate({_id: blogId}, {$pull: {comments: {_id: commentIdToDelete}}}, {new: true})
             console.log("👍Comment Deleted")
             console.log("Deleted Comment Details: ", deletedComment)
-            req.flash('success', 'Comment Deletion Success')
+            req.flash('success', 'Comment deleted')
             res.redirect('/admin/blogInfo')
         }
         catch(error) {
@@ -95,7 +88,8 @@ async function deleteComment(req, res) {
         }
 
     } else {
-        res.send("Warning: You have no permission to do this action.")
+        req.flash('info', 'You have no permission to do this action.')
+        res.redirect('/admin/blogInfo')
     }
 
 }
@@ -110,7 +104,7 @@ async function deleteUser(req, res) {
         console.log("User Deleted: ", deletedUser)
 
         // creating a flash message
-        req.flash('success', 'User Deletion Success')
+        req.flash('success', 'User deleted successfully')
 
         res.redirect('/admin/userInfo')
     }
@@ -133,7 +127,7 @@ async function restrictUser(req, res) {
         console.log(`Restriction for user ${req.body.username} applied successfully`)
         console.log("Updated user document: ", updatedDocument)
 
-        req.flash('success', 'User restriction successful')
+        req.flash('success', 'User has been restricted')
 
         res.redirect('/admin/userInfo')
 
@@ -142,7 +136,7 @@ async function restrictUser(req, res) {
         const updatedDocument = await userModel.findOneAndUpdate({username: req.body.username}, {$set: {isRestricted: false} }, {new: true})
         console.log(`Restriction for user ${req.body.username} removed successfully`)
 
-        req.flash('success', 'User restriction removed successfully')
+        req.flash('success', 'User restriction removed has been removed')
 
         res.redirect('/admin/userInfo')
     }

@@ -33,17 +33,18 @@
       return dateInDMY;
     }%>
 
-    <%if(data.message.length > 0) {%>
-
-      <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" >
-          <div class="toast-body bg-success bg-gradient text-white fw-semibold">
-            <%=data.message%>
+    
+    <!-- flash messages -->
+    <% // For success flash messages %>
+    <%if(flashMessages.success && flashMessages.success.length > 0) {%>
+      <div class="toast-container position-fixed bottom-0 end-0 mx-4 my-2">
+          <div id="liveToast" class="toast p-0 my-2" role="alert" >
+            <div class="toast-body bg-success bg-gradient text-white fw-semibold ">
+              <%=flashMessages.success%>
+            </div>
           </div>
-        </div>
       </div>
-
-  <%}%>
+    <%}%>
 
 
     <%if(data.users.length > 0){%>

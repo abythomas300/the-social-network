@@ -38,7 +38,7 @@ async function registerUser(req, res) {
         
         // generating OTP
         const generatedOTP = authenticator.generate(secretKey)
-        
+        console.log(generatedOTP)
         // encrypting password and OTP
         const passwordHash = await bcrypt.hash(password, 10)
         const OTPHash = await bcrypt.hash(generatedOTP, 10)
