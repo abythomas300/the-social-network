@@ -8,12 +8,13 @@ const nodemailer = require('nodemailer')
 // nodemailer initialization
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
+    service: process.env.EMAIL_SERVICE,
     port: process.env.EMAIL_PORT,
-    secure: false,  
+    secure: process.env.EMAIL_SECURITY_STATUS,
     auth: {
-        user: process.env.EMAIL_USER,
+        user: process.env.EMAIL_SENDER_ADDRESS,
         pass: process.env.EMAIL_PASS
-    },
+    }
 })
 
 
@@ -53,11 +54,11 @@ async function registerUser(req, res) {
         console.log("Sending mail to SMTP server ......")
         const start = performance.now()
         const info = await transporter.sendMail({
-            from: `"${senderName}" <${process.env.EMAIL_SENDER}>`,
+            from: `"${senderName}" <${process.env.EMAIL_SENDER_ADDRESS}>`,
             to: emailAddress,
             subject: 'OTP for Account Creation',
             text: `Your One Time Password (OTP) for creating an account in The Social Network is ${generatedOTP}. Your code only vaild for 2 minutes and do not share it with anyone else.`,
-            html: `Welcome to The Social Network, you are one verification away from creating your account. <br><br> Your One Time Password (<b>OTP</b>) for creating an account in The Social Network is <b> ${generatedOTP} </b>. Your code only <b> vaild for 2 minutes </b> and do not share it with anyone else.`
+            html: `Welcome to The Social Network, you are one verification away from creating your account. <br><br> Your One Time Password (<b>OTP</b>) for creating an account in The Social Network is <b> ${generatedOTP} </b>. Your code only <b> vaild for 2 minutes </b> and do not share it with anyone else. <br><br> Best Regards, <br> Admin <br>The Social Network `
         })
         const end = performance.now()
         const timeTaken = (end - start) / 1000
