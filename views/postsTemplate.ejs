@@ -157,7 +157,11 @@
                                              <%if(comment.commentAuthor) {%> <%// checking whether user exitst (when reference object is not null)%>
                                                 <img src="https://avatar.iran.liara.run/username?username=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
                                                 <div class="d-flex align-items-center justify-content-start">
-                                                    <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
+                                                    <%if(comment.commentAuthor.username === blog.author.username){%> <% // checking whether this comment is done by the author%>
+                                                        <span class="fw-bold mx-2"> <%=comment.commentAuthor.username%></span><span class="badge bg-primary mx-0 me-2">OP</span><span class="mx-2 text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
+                                                    <%} else {%>
+                                                        <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
+                                                    <%}%>
                                                 </div>
                                              <%} else {%>  <%// when user does not exist%>
                                                 <img src="/images/no_profile_picture_placeholder.png" class="rounded-circle" width="40" height="40">
