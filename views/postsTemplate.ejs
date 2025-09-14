@@ -59,7 +59,7 @@
         <%if(flashMessages.success && flashMessages.success.length > 0) {%>
               <div class="liveToast toast p-0 my-2" role="alert" >
                 <div class="toast-body bg-success bg-gradient text-white fw-semibold ">
-                  <%=flashMessages.success%>
+                  <%=flashMessages.success%>, Welcome <b><%=currentUser.username%></b>
                 </div>
               </div>
         <%}%>
