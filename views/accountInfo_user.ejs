@@ -39,6 +39,14 @@
     }
 </style>
 <body>
+
+    <!-- Helper function to convert date from YYYY-MM-DD to DD-MM-YYYY -->
+    <% function dateConversion(dateInYMD){
+        const parts = dateInYMD.split('-')
+        const dateInDMY = `${parts[2]}-${parts[1]}-${parts[0]}`
+        return dateInDMY;
+    }%>
+
     <%- include('partials/_header') %>
 
     <%- include('partials/_navbar') %>
@@ -66,7 +74,7 @@
                  <%}%>
 
                   <li class="list-group-item">
-                    <strong>Member Since: </strong> <%= currentUser.joinedDate.substring(0,10)%>
+                    <strong>Member Since: </strong> <%= dateConversion(currentUser.joinedDate.substring(0,10))%>
                   </li>
                   
                   <%if(currentUser.email){%>
