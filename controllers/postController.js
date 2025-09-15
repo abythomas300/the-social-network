@@ -238,6 +238,11 @@ async function addComment(req, res) {
 }
 
 
+function displayMyAccountPage(req, res) {
+
+    res.render('accountInfo_user')
+}
+
 
 // exporting all methods
 module.exports = {
@@ -248,5 +253,6 @@ module.exports = {
     updatePost,
     showBlogCreationPage,
     likeBlog,
-    addComment
+    addComment,
+    displayMyAccountPage
 }

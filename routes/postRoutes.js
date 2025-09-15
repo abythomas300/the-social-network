@@ -21,7 +21,7 @@ router.get('/editBlog/:blogId', isLoggedIn, postController.showBlogEditPage )
 router.patch('/:blogId', isLoggedIn, upload.single('updatedBlogThumbail'), postController.updatePost)
 router.post('/like/:blogId', isLoggedIn, postController.likeBlog)
 router.post('/comment/:blogId', isRestricted, postController.addComment )
-
+router.get('/myaccount', isLoggedIn, postController.displayMyAccountPage)
 
 
 // exporting router object

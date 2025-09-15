@@ -13,6 +13,9 @@
                 <%}%>
             </li>
             <li class="nav-item">
+                <a class="nav-link fw-semibold" href="/post/myaccount?username=<%=currentUser.username%>">My account (<%=currentUser.username%>)</a>
+            </li>
+            <li class="nav-item">
                 <form action="/logout" method="post" id="logout-form">
                     <a class="nav-link fw-semibold" href="#" onclick="submitLogoutForm()">Logout</a>
                 </form>

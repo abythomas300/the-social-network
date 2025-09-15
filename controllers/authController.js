@@ -185,7 +185,8 @@ async function loginUser(req, res) {
                     username: user.username,
                     role: user.role,
                     joinedDate: user.createdAt,
-                    restrictionStatus: user.isRestricted
+                    restrictionStatus: user.isRestricted,
+                    useremail: user.email
                 }
                 console.log("- - - Session Created - - - ")
                 console.log("Session Details :-")

@@ -58,7 +58,8 @@ app.use(function (req, res, next){
             username: req.session.user.username,
             role: req.session.user.role,
             joinedDate: req.session.user.joinedDate,
-            restrictionStatus: req.session.user.restrictionStatus
+            restrictionStatus: req.session.user.restrictionStatus,
+            email: req.session.user.useremail
         }
     }
     
