@@ -8,6 +8,7 @@ const flash = require('connect-flash')
 const methodOverride = require('method-override')
 const path = require('path')
 const helmet = require('helmet')
+const crypto = require('crypto')
 
 
 // importing routes
@@ -23,14 +24,22 @@ const port = process.env.PORT
 const db_URI = process.env.MONGO_URI
 
 // middleware definitions and configurations
-app.use(helmet())
-app.use(helmet.contentSecurityPolicy({  // overriding helmet's default Content Security Policy to allow loading of resources from trusted domains
-    directives: {
-        "default-src" : ["'self'"],
-        "script-src" : ["'self'", "https://cdn.jsdelivr.net"],
-        "img-src": ["'self'", "https://i.pravatar.cc", "https://avatar.iran.liara.run"]
-    },
-}),)
+
+app.use((req, res, next) => { // generating random nonce for each request
+    res.locals.cspNonce = crypto.randomBytes(16).toString('base64');
+    next();
+});
+
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            "default-src": ["'self'"],
+            "script-src": ["'self'", "https://cdn.jsdelivr.net", (req, res) => `'nonce-${res.locals.cspNonce}'`],
+            "img-src": ["'self'", "https://i.pravatar.cc", "https://avatar.iran.liara.run"]
+        }
+    }
+}
+))
 
 app.use(methodOverride('_method')) // to override default html form method into other methods like DELETE, PUT or PATCH, which will be specified with the key '_method' in the html form as query parameter
 app.use(express.json())        // to look for JSON data in ALL incoming requests and parse it to javascript object notation
@@ -47,13 +56,13 @@ app.use(session({    // express-session initialization (global middleware)
 }))
 
 //initializing 'connect-flash' for flash messages
-app.use(flash())  
- 
+app.use(flash())
+
 // custom middleware for assigning data to res.locals object
-app.use(function (req, res, next){ 
-    
+app.use(function (req, res, next) {
+
     // adding user's information to res.locals
-    if(req.session.user) {
+    if (req.session.user) {
         res.locals.currentUser = {
             username: req.session.user.username,
             role: req.session.user.role,
@@ -62,7 +71,7 @@ app.use(function (req, res, next){
             email: req.session.user.useremail
         }
     }
-    
+
     // pulling all the flash messages from req.flash object and storing it in res.locals.flashMessages object
     res.locals.flashMessages = {
         success: req.flash('success'),
@@ -76,7 +85,7 @@ app.use(function (req, res, next){
 app.set('view engine', 'ejs')
 
 // (route specific middlwares)
-app.use('/post', postRouter) 
+app.use('/post', postRouter)
 app.use('/admin', adminRoutes)
 app.use('/register', authRoutes)
 
@@ -90,15 +99,15 @@ app.post('/logout', authController.logoutUser) // handling '/localhost:<port>/lo
 
 // connecting to database
 mongoose.connect(db_URI)
-.then(function(){
-    console.log("Connected to Database Successfully")
-})
-.catch(function(error){
-    console.log("Database Connection Failed, reason: ", error)
-})
+    .then(function () {
+        console.log("Connected to Database Successfully")
+    })
+    .catch(function (error) {
+        console.log("Database Connection Failed, reason: ", error)
+    })
 
 
 // starting server
-app.listen(port,function(){
+app.listen(port, function () {
     console.log(`Server is running at http://localhost:${port}/`)
 })
