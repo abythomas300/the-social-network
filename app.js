@@ -35,7 +35,8 @@ app.use(helmet({
         directives: {
             "default-src": ["'self'"],
             "script-src": ["'self'", "https://cdn.jsdelivr.net", (req, res) => `'nonce-${res.locals.cspNonce}'`],
-            "img-src": ["'self'", "https://i.pravatar.cc", "https://avatar.iran.liara.run"]
+            "img-src": ["'self'", "https://i.pravatar.cc", "https://avatar.iran.liara.run"],
+            "connect-src": ["'self'", "https://cdn.jsdelivr.net"]
         }
     }
 }
