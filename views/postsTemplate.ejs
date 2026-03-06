@@ -124,17 +124,17 @@
                         
                         <%// checking whether the current user has already liked the blog (for showing the active like button)%>
                         <%if(blog.likes.includes(data.currentUser.userId)) {%>
-                            <button class="btn btn-outline-primary btn-sm likeButton" onclick="likeHandler('<%=blog._id%>')"><i class="likeIcon bi bi-heart-fill"><span class="likeCountText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
+                            <button class="btn btn-outline-primary btn-sm likeButton" data-id= "<%=blog._id%>"><i class="likeIcon bi bi-heart-fill"><span class="likeCountText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
                         <%} else {%> <%// shows inactive like button%>
-                            <button class="btn btn-outline-primary btn-sm likeButton" onclick="likeHandler('<%=blog._id%>')"><i class="likeIcon bi bi-heart"><span class="likeCountText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
+                            <button class="btn btn-outline-primary btn-sm likeButton" data-id= "<%=blog._id%>"><i class="likeIcon bi bi-heart"><span class="likeCountText ms-2" style="font-style: normal; font-size: large;"><%= blog.likes.length %></span></i></button>
                         <%}%>
 
-                        <button class="btn btn-outline-primary btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')"><i class="bi bi-chat-left-dots"><span class="ms-2" style="font-style: normal; font-size: large;"><%=blog.comments.length%></span></i></button>
+                        <button class="btn btn-outline-primary btn-sm comment-toggle-btn" data-id="comments-<%=blog._id%>"><i class="bi bi-chat-left-dots"><span class="ms-2" style="font-style: normal; font-size: large;"><%=blog.comments.length%></span></i></button>
                         
-                        <!-- Checking whether author of a blog is logged in  -->
+                        <!-- Checking whether current user is the author  -->
                         <%if(data.currentUser.userId === blog.author._id.toString()){%>
                             <a href="/post/editBlog/<%=blog._id%>"><button class="btn btn-outline-primary btn-md"><i class="bi bi-pencil-square"></i></button></a>
-                            <button class="btn btn-outline-primary btn-md" onclick="submitDeleteForm('<%=blog._id%>')"><i class="bi bi-trash3"></i></button>
+                            <button class="btn btn-outline-primary btn-md deleteButton" data-id="<%=blog._id%>"><i class="bi bi-trash3"></i></button>
                         <%}%>
 
                     </div>
@@ -244,83 +244,72 @@
     })
     });
 
-
-    // method to toggle comment section
-    function toggleCommentSection(sectionId) {
-        const commentSection = document.getElementById(sectionId)
-        if(commentSection.style.display === 'none') {
-            commentSection.style.display = 'block'
-        } else {
-            commentSection.style.display = 'none'
-        }
-    }
-
-
-    // method to submit the blog delete form
-    function submitDeleteForm(blogId){
-        console.log("ID of the blog passed to submitDeleteFrom() method: ", blogId)
-        const blogDeleteForm = document.getElementById('blogDeleteForm')
-        blogDeleteForm.action = `/post/${blogId}?_method=DELETE` 
-        blogDeleteForm.submit()
-    }
-
-
-    // temporary updation of like count in client side
-    const likeButtons = document.querySelectorAll('.likeButton')
-    likeButtons.forEach(function(likeButton){
-        likeButton.addEventListener('click', function(event){
-
-            const icon = likeButton.querySelector('i')  // getting the i tag(like icon element) inside the event triggered button
-            let likeCountText = likeButton.querySelector('.likeCountText') // getting the span tag(like count) element inside the event triggered button
-
-            // toggling functionality
-            if(icon.classList.contains('bi-heart')) {
-
-                icon.classList.remove('bi-heart')
-                icon.classList.add('bi-heart-fill')
-                likeCountText.textContent = parseInt(likeCountText.textContent) + 1
-
-            } else if(icon.classList.contains('bi-heart-fill')) {
-
-                icon.classList.remove('bi-heart-fill')
-                icon.classList.add('bi-heart')
-                likeCountText.textContent = parseInt(likeCountText.textContent) - 1
-
+    // event listener for comment box toggle
+    document.querySelectorAll('.comment-toggle-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const commentSection = document.getElementById(button.dataset.id)
+            if(commentSection.style.display === 'none') {
+                commentSection.style.display = 'block'
+                button.classList.add('bg-primary')
+                button.classList.add('text-white')
+            } else {
+                commentSection.style.display = 'none'
+                button.classList.remove('bg-primary')
+                button.classList.remove('text-white')
             }
+        });
+    });
 
-
+    document.querySelectorAll('.deleteButton').forEach(function(deleteButton){
+        deleteButton.addEventListener('click', function(event){
+            const blogId = deleteButton.dataset.id
+            console.log("ID of the blog passed to submitDeleteFrom() method: ", blogId)
+            const blogDeleteForm = document.getElementById('blogDeleteForm')
+            blogDeleteForm.action = `/post/${blogId}?_method=DELETE` 
+            blogDeleteForm.submit()
         })
     })
 
-
-    // handling the like  request mannually using fetch() to avoid page reload when clicking on like button
-    async function likeHandler(blogId){
-        console.log("Blog Like Request Detected")
-        console.log("Blog Id Passed: ", blogId)
-        likeURL = `/post/like/${blogId}`
-        console.log("POST Request URL: ", likeURL)
-        console.log("Sending a post request to the server (without any payload)")
-
-        try{
-            
-            const response = await fetch(likeURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-                // we are not sending any payload to server, so no need to specify body:{} field
-            })
-            if(response.ok) {
-                console.log("Post liked Successfully without any errors!")
-            } else {
-                console.log("Error in response from server")
+    // event listener for like button 
+    document.querySelectorAll('.likeButton').forEach(function(likeButton){
+        likeButton.addEventListener('click', async function(event){
+            const icon = likeButton.querySelector('i')
+            let likeCountText = likeButton.querySelector('.likeCountText')
+            if(icon.classList.contains('bi-heart')) {
+                icon.classList.remove('bi-heart')
+                icon.classList.add('bi-heart-fill')
+                likeCountText.textContent = parseInt(likeCountText.textContent) + 1
+            } else if(icon.classList.contains('bi-heart-fill')) {
+                icon.classList.remove('bi-heart-fill')
+                icon.classList.add('bi-heart')
+                likeCountText.textContent = parseInt(likeCountText.textContent) - 1
             }
 
-        }
-        catch(error){
-            console.error("Like opearation failed, reason:", error)
-        }
-    }
+
+            const blogId = likeButton.dataset.id
+            console.log("Blog Like Request Detected, Blog Id:", blogId) // test
+            const likeURL = `/post/like/${blogId}`
+            try{
+                const response = await fetch(likeURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                    // we are not sending any payload to server, so no need to specify body:{} field
+                })
+                if(response.ok) {
+                    console.log("Post liked Successfully without any errors!")
+                } else {
+                    console.log("Error in response from server")
+                }
+            }
+            catch(error){
+                console.error("Like opearation failed, reason:", error)
+            }
+
+        })
+    })
+    
     </script>
 
 </body>

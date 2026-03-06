@@ -17,7 +17,7 @@
             </li>
             <li class="nav-item">
                 <form action="/logout" method="post" id="logout-form">
-                    <a class="nav-link fw-semibold" href="#" onclick="submitLogoutForm()">Logout</a>
+                    <a class="nav-link fw-semibold" href="#" id="logout-button">Logout</a>
                 </form>
             </li>
         </ul>
@@ -30,4 +30,7 @@
     function submitLogoutForm(){
         document.getElementById("logout-form").submit()
     }
+
+    // Logout button click event listener
+    document.getElementById("logout-button").addEventListener("click", submitLogoutForm)
 </script>

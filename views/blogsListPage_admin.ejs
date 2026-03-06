@@ -201,7 +201,7 @@
                         <i class="bi bi-heart "></i>
                         <span style="font-style: normal; font-size: large;"> <%=blog.likes.length%></span>
                       </button>
-                      <button class="btn btn-outline-danger btn-sm" onclick="toggleCommentSection('comments-<%=blog._id%>')">
+                      <button class="btn btn-outline-danger btn-sm comment-toggle-btn" data-id="comments-<%=blog._id%>">
                         <i class="bi bi-chat-left-dots"></i>
                         <span style="font-style: normal; font-size: large;"> <%=blog.comments.length%></span>
                       </button>
@@ -210,7 +210,7 @@
                         <i class="bi bi-pencil-square text-danger"></i>
                       </a>
                       </button>
-                      <button class="btn btn-outline-danger btn-md" onclick="submitDeleteForm('<%=blog._id%>')">
+                      <button class="btn btn-outline-danger btn-md delete-button" data-id="<%=blog._id%>">
                         <i class="bi bi-trash3"></i>
                       </button>
                     </div>
@@ -303,12 +303,15 @@
          });
 
 
-        // method to submit the delete blog form
-        function submitDeleteForm(blogId){
-          const blogDeleteForm = document.getElementById('blogDeleteForm')
-          blogDeleteForm.action = `/post/${blogId}?_method=DELETE`  // setting form action URL (method overriding included)
-          blogDeleteForm.submit()
-        }
+        // event listener for blog delete button
+        document.querySelectorAll('.delete-button').forEach(function(button){
+          button.addEventListener('click', function(event){
+            const blogId = button.dataset.id
+            const blogDeleteForm = document.getElementById('blogDeleteForm')
+            blogDeleteForm.action = `/post/${blogId}?_method=DELETE`  // setting form action URL (method overriding included)
+            blogDeleteForm.submit()
+          })
+        })
 
         
         // Expand button
@@ -330,19 +333,22 @@
           });
         });
 
-
         // method to toggle comment section
-        function toggleCommentSection(sectionId) {
-            const commentSection = document.getElementById(sectionId)
+        document.querySelectorAll('.comment-toggle-btn').forEach(function(button) {
+          button.addEventListener('click', function() {
+            const commentSection = document.getElementById(button.dataset.id)
             if(commentSection.style.display === 'none') {
-              console.log("comment section is hidden")
                 commentSection.style.display = 'block'
+                button.classList.add('bg-danger')
+                button.classList.add('text-white')                
             } else {
-              console.log("comment section is NOT hidden")
                 commentSection.style.display = 'none'
+                button.classList.remove('bg-danger')
+                button.classList.remove('text-white')
             }
-        }
-
+          })
+        })
+        
         // changing delete button color on mouse hover
         const commentDeleteButton = document.querySelectorAll('.comment-delete-icon')
         console.log("delete button node list: ", commentDeleteButton)
