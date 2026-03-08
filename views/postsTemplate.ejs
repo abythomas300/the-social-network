@@ -46,12 +46,29 @@
 <body>
 
 
-    <!-- Helper function to convert date from YYYY-MM-DD to DD-MM-YYYY -->
-    <% function dateConversion(dateInYMD){
-        const parts = dateInYMD.split('-')
-        const dateInDMY = `${parts[2]}-${parts[1]}-${parts[0]}`
-        return dateInDMY;
-    }%>
+    <!-- Helper functions to convert date and time -->
+    <% 
+        function dateConversion(mongoDate){
+            const date = new Date(mongoDate);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');  // Months are 0-indexed
+            const year = date.getFullYear();
+        
+            return `${day}-${month}-${year}`;
+        }
+    %>
+
+    <%
+        function extractTime(utcDate) {
+            const date = new Date(utcDate);
+            const time = date.toLocaleTimeString('en-IN', { 
+              timeZone: 'Asia/Kolkata',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            return time;
+        }
+     %>
 
     <div class="toast-container position-fixed bottom-0 end-0 mx-4 my-2">
 
@@ -112,7 +129,7 @@
                                 <p class="lead mt-4"><%= blog.content %></p>
                                 <div class="d-flex align-items-center">
                                     <img src="https://avatar.iran.liara.run/username?username=<%=blog.author.username%>" alt="profile picture" width="30" height="30">
-                                    <p class="text-muted large mt-3 ms-2">Posted by <span class="fst-italic fw-semibold mx-1"> <%= blog.author.username %> </span> on <%= dateConversion(blog.createdAt.toISOString().substring(0,10))%> </p>
+                                    <p class="text-muted large mt-3 ms-2">Posted by <span class="fst-italic fw-semibold mx-1"> <%= blog.author.username %> </span> on <%= dateConversion(blog.createdAt)%> </p>
                                 </div>
                                 <!-- Option Buttons -->
                             </div>
@@ -158,15 +175,15 @@
                                                 <img src="https://avatar.iran.liara.run/username?username=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
                                                 <div class="d-flex align-items-center justify-content-start">
                                                     <%if(comment.commentAuthor.username === blog.author.username){%> <% // checking whether this comment is done by the author%>
-                                                        <span class="fw-bold mx-2"> <%=comment.commentAuthor.username%></span><span class="badge bg-primary mx-0 me-2">OP</span><span class="mx-2 text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
+                                                        <span class="fw-bold mx-2"> <%=comment.commentAuthor.username%></span><span class="badge bg-primary mx-0 me-2">OP</span><span class="mx-2 text-muted"><%=dateConversion(comment.createdAt)%> at <%=extractTime(comment.createdAt)%> </span>
                                                     <%} else {%>
-                                                        <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
+                                                        <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt)%> at <%=extractTime(comment.createdAt)%> </span>
                                                     <%}%>
                                                 </div>
                                              <%} else {%>  <%// when user does not exist%>
                                                 <img src="/images/no_profile_picture_placeholder.png" class="rounded-circle" width="40" height="40">
                                                 <div class="d-flex align-items-center justify-content-start">
-                                                    <span class="fw-bold fst-italic mx-2">deleted user</span><span class="text-muted"><%=dateConversion(comment.createdAt.toISOString().substring(0,10))%> at <%=comment.createdAt.toISOString().substring(11,16)%> </span>
+                                                    <span class="fw-bold fst-italic mx-2">deleted user</span><span class="text-muted"><%=dateConversion(comment.createdAt)%> at <%= extractTime(comment.createdAt)%> </span>
                                                 </div>
                                              <%}%> 
                                         </div>
