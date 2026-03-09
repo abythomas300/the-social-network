@@ -36,10 +36,8 @@ async function registerUser(req, res) {
 
         const authenticator = otplib.authenticator
         const secretKey = process.env.OTPLIB_SECRET_KEY
-        
         // generating OTP
         const generatedOTP = authenticator.generate(secretKey)
-        console.log(generatedOTP)
         // encrypting password and OTP
         const passwordHash = await bcrypt.hash(password, 10)
         const OTPHash = await bcrypt.hash(generatedOTP, 10)
@@ -47,11 +45,9 @@ async function registerUser(req, res) {
         // saving email, username, password and generated OTP to DB
         const newUser = new userModel({username: username, password: passwordHash, email: emailAddress, otp: OTPHash}) // creating user model object
         await newUser.save()  // passing user model object to mongoose to create new document in DB
-        console.log('Email, Username, Password(hash), Generated OTP(hash) saved to DB successfully')
-
+        
         // sending mail
         const senderName = "The Social Network"
-        console.log("Sending mail to SMTP server ......")
         const start = performance.now()
         const info = await transporter.sendMail({
             from: `"${senderName}" <${process.env.EMAIL_SENDER_ADDRESS}>`,
@@ -62,16 +58,12 @@ async function registerUser(req, res) {
         })
         const end = performance.now()
         const timeTaken = (end - start) / 1000
-        console.log("OTP Mail sent to SMTP server 📧")
-        console.log(`Time taken to send mail:  ${Math.round(timeTaken)}s`)
-        console.log("Message ID: ", info.messageId)
 
         res.render('otpPage_user', {email: emailAddress})  // redirecting users to login page
 
     }
     catch(error){
 
-        console.log("Error in registration, reason: ", error)
         req.flash('failure', 'Registration Error, try again later')
 
         res.redirect('/register')
@@ -90,27 +82,21 @@ async function otpCheck(req, res) {
         const emailAddress = req.body.email
         const userEnteredOTP = req.body.otp
 
-        console.log("Email Address Got From Form: ", emailAddress)
-        console.log("OTP Got From Form: ", userEnteredOTP)
 
         const userDetails = await userModel.findOne({email: emailAddress})
-        console.log("Respective User Details Fetched: ", userDetails)
 
         // checking whether otp timer has expired
         // if otp is entered within 2 minutes
         if((otpEnteredTime - userDetails.otpGeneratedAt) <= 120000) {  // OTP expiry set to 2 minutes
 
-            console.log("OTP submission is on time ⌚👍")
             // comparing otps
             const isMatch = await bcrypt.compare(userEnteredOTP, userDetails.otp)
 
             // If both OTPs are the same
             if(isMatch) {
 
-                console.log("OTP Matches ✅")
                 // setting the verified field to 'true'
                 const modifiedUserDocument = await userModel.findByIdAndUpdate(userDetails._id, {$set: {isVerified: true}}, {new: true})
-                console.log("isVerified field updated ✅ --> ", modifiedUserDocument)
 
                 // creating flash message
                 req.flash('success', 'Registraion Successful.')
@@ -120,11 +106,9 @@ async function otpCheck(req, res) {
 
             } else {  // If OTPs are not same
 
-                console.log("OTP does not match ❌")
 
                 // deleting saved user details from DB
                 await userModel.findByIdAndDelete(userDetails._id)
-                console.log("Saved user data cleared from DB")
 
                 req.flash('failure', 'Registration failed, OTP Does not match.')
 
@@ -134,13 +118,11 @@ async function otpCheck(req, res) {
 
         } else {  // If OTP is not entered within 2 minutes
 
-            console.log("⌛OTP has been expired (2 minutes passed)")
 
             const user = await userModel.findById(userDetails._id)
 
             // deleting saved user details from DB
             await userModel.findByIdAndDelete(userDetails._id)
-            console.log("Document cleared from DB")
 
             req.flash('failure', 'Registration failed, OTP Expired.')
 
@@ -152,7 +134,6 @@ async function otpCheck(req, res) {
     catch(error) {
 
         res.send("There was an error verifying the OTP, try again later.")
-        console.log("Error in OTP check, reason: ", error)
 
     }
 
@@ -172,12 +153,10 @@ async function loginUser(req, res) {
 
         if(user) {  // if such user exists
 
-            console.log("User found")
             // comparing passwords
             const isMatch = await bcrypt.compare(password, user.password)
             
             if(isMatch) {
-                console.log("Passwords Match.")
 
                 // creating session 
                 req.session.user = {
@@ -188,11 +167,6 @@ async function loginUser(req, res) {
                     restrictionStatus: user.isRestricted,
                     useremail: user.email
                 }
-                console.log("- - - Session Created - - - ")
-                console.log("Session Details :-")
-                console.log(`User ID: ${req.session.user.userId}`)
-                console.log(`UserName: ${req.session.user.username}`)
-                console.log(`User's Role: ${req.session.user.role}`)
 
                 req.flash('success', 'Login Successful')  // creating a flash message
 
@@ -206,7 +180,6 @@ async function loginUser(req, res) {
 
             } else {
 
-                console.log("Passwords Does Not Match")
                 req.flash('failure', 'Wrong Password')
 
                 res.redirect('/login')
@@ -214,7 +187,6 @@ async function loginUser(req, res) {
 
         } else {
 
-            console.log("Cannot find user with that username")
             req.flash('failure', 'User not found')
 
             res.redirect('/login')
@@ -223,7 +195,6 @@ async function loginUser(req, res) {
     }
     catch(error) {
 
-        console.log("Login process failed, reason:", error)
         req.flash('faliure', 'Cannot Login, Try again later')
 
         res.redirect('/login')
@@ -236,22 +207,14 @@ async function loginUser(req, res) {
 // method to handle user logout
 async function logoutUser(req, res){
     try {
-        console.log("Session data about to be cleared")
-        console.log("Details :-")
-        console.log(`User ID: ${req.session.user.userId}`)
-        console.log(`UserName: ${req.session.user.username}`)
-        console.log(`User's Role: ${req.session.user.role}`)
-
         req.session.destroy(function(error){  // req.session.destroy() is a CALLBACK based asynchronous method(not PROMISE based), so we cannot use await on this
             if(error) {
-                console.log("Logout Failed, reason: ", error)
             }else{
                 res.redirect('/?message=loggedout' )  // sending logout indicator as a query parameter as req.flash() does not work (req.flash() need session but session is already would get deleted here.)
             }
         })
 
     }catch(err){
-        console.log("Logout Error, reason: ", err)
         req.flash('failure', 'Logout failed')
 
         res.redirect('/post')

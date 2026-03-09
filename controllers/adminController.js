@@ -31,7 +31,6 @@ async function displayAllBlogs(req, res) {
 
     }catch(error){
 
-        console.log("Failed to fetch blogs from DB, reason: ", error)
         res.render("Error displaying blogs, try again.")
 
     }
@@ -57,13 +56,11 @@ async function displayUsersList(req, res) {
 async function showBlogEditPage(req, res) {
     try{
         const blogIdToDelete = req.params.blogId
-        console.log("Blog Id: ", blogIdToDelete)
         const entireBlog = await postModel.findById(blogIdToDelete)
-        console.log("The Entire Blog to be updated--> ", entireBlog)
         res.render('editBlogPage_admin', {previousBlog: entireBlog})
 
     }catch(error){
-        console.log("Error showing blog edit page, reason: ", error)
+
         res.send("Error displaying blog edit page")
     }
 }
@@ -78,13 +75,11 @@ async function deleteComment(req, res) {
             const blogId = req.params.blogId
             const commentIdToDelete = req.body.commentId
             const deletedComment = await postModel.findOneAndUpdate({_id: blogId}, {$pull: {comments: {_id: commentIdToDelete}}}, {new: true})
-            console.log("👍Comment Deleted")
-            console.log("Deleted Comment Details: ", deletedComment)
             req.flash('success', 'Comment deleted')
             res.redirect('/admin/blogInfo')
         }
         catch(error) {
-            console.log("Comment Deletion Failed, reason: ", error)
+
         }
 
     } else {
@@ -99,9 +94,7 @@ async function deleteUser(req, res) {
 
     try{
 
-        console.log("REQUEST BODY*************", req.body)
         const deletedUser = await userModel.findOneAndDelete({username: req.body.username})
-        console.log("User Deleted: ", deletedUser)
 
         // creating a flash message
         req.flash('success', 'User deleted successfully')
@@ -110,7 +103,7 @@ async function deleteUser(req, res) {
     }
     catch(error) {
 
-        console.log("Error in deleting user, reason: ", error)
+
         res.send("Cannot delete user, try again later.")
 
     }
@@ -124,8 +117,6 @@ async function restrictUser(req, res) {
     if(userDetails.isRestricted === false) {
 
         const updatedDocument = await userModel.findOneAndUpdate({username: req.body.username}, {$set: {isRestricted: true} }, {new: true})
-        console.log(`Restriction for user ${req.body.username} applied successfully`)
-        console.log("Updated user document: ", updatedDocument)
 
         req.flash('success', 'User has been restricted')
 
@@ -134,7 +125,7 @@ async function restrictUser(req, res) {
     } else {
 
         const updatedDocument = await userModel.findOneAndUpdate({username: req.body.username}, {$set: {isRestricted: false} }, {new: true})
-        console.log(`Restriction for user ${req.body.username} removed successfully`)
+
 
         req.flash('success', 'User restriction removed has been removed')
 

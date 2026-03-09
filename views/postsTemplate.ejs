@@ -280,7 +280,6 @@
     document.querySelectorAll('.deleteButton').forEach(function(deleteButton){
         deleteButton.addEventListener('click', function(event){
             const blogId = deleteButton.dataset.id
-            console.log("ID of the blog passed to submitDeleteFrom() method: ", blogId)
             const blogDeleteForm = document.getElementById('blogDeleteForm')
             blogDeleteForm.action = `/post/${blogId}?_method=DELETE` 
             blogDeleteForm.submit()
@@ -302,9 +301,7 @@
                 likeCountText.textContent = parseInt(likeCountText.textContent) - 1
             }
 
-
             const blogId = likeButton.dataset.id
-            console.log("Blog Like Request Detected, Blog Id:", blogId) // test
             const likeURL = `/post/like/${blogId}`
             try{
                 const response = await fetch(likeURL, {
@@ -315,13 +312,10 @@
                     // we are not sending any payload to server, so no need to specify body:{} field
                 })
                 if(response.ok) {
-                    console.log("Post liked Successfully without any errors!")
                 } else {
-                    console.log("Error in response from server")
                 }
             }
             catch(error){
-                console.error("Like opearation failed, reason:", error)
             }
 
         })

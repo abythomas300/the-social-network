@@ -7,12 +7,9 @@ async function getAllPosts(req, res){
 
     const allPosts = await postModel.find({}).populate([{path: 'author'}, {path: 'comments.commentAuthor'}])
     const documentCount = await postModel.countDocuments({})
-    console.log("Total number of blogs fetched from DB: ", documentCount)
     if(allPosts.length === 0){  // if there is no data in DB (ie. 'allPosts' is empty)
         res.send('<h3 style="text-align:center; font-size: 2.5em; color:blue"><i>The Social Network</i></h3> <p>All posts will appear here, no new posts for now. </p>')
     } else {
-        // const successMessage = req.flash('success')  
-        // console.log("Flash message (success) in postController: ", successMessage)
 
         const data = {    // combining data fetched from DB and flash message into one single object so that it can be passed to view
             blogs: allPosts,
@@ -34,25 +31,15 @@ function showBlogCreationPage(req, res) {
 async function createNewPost(req, res) {
 
     try {
-        console.log("Create new post request detected")
-        console.log("Requested User Id", req.session.user.userId)
-        console.log("Requested User name", req.session.user.username)
-        console.log("Requested User role", req.session.user.userId)
-
         const newPost = new postModel({title: req.body.title, content: req.body.content, author: req.session.user.userId, thumbnail: req.file.filename})
         
-        console.log("Saving post to DB ...")
         await newPost.save() 
         
-        console.log("Blog created Successfully")
-        console.log("Uploaded File Details: ", req.file)
-
         req.flash('success', 'Blog uploaded successfully')
 
         res.redirect('/post')  
     }
     catch(error){
-        console.log("Post Creation Failed, reason: ", error)
         req.flash('failure', 'Cannot upload your blog, try again later')
 
         res.redirect('/post')
@@ -64,15 +51,12 @@ async function deletePost(req, res) {
     
     try{
         const postIdToRemove = req.params.blogId;
-        console.log("Post delete request detected, Post id to delete: ", postIdToRemove)
         const originalBlog = await postModel.findById(req.params.blogId)
 
         // checking whether current user is the author of the blog or whether the request is made by an admin
         if((originalBlog.author._id.toString() === req.session.user.userId) || (req.session.user.role === 'admin')) {
 
-            console.log("Blog deletion request from: ", req.session.user)
             const deletedPost = await postModel.findByIdAndDelete(postIdToRemove)
-            console.log("Deleted Blog Details:", deletedPost)
 
             req.flash('success', 'Blog deleted successfully')
             
@@ -81,7 +65,6 @@ async function deletePost(req, res) {
             role === 'admin'? res.redirect('/admin/blogInfo'): res.redirect('/post')
 
         }else{
-            console.log("Current user id and Blog author id does not match")
             req.flash('failure', 'Cannot delete blog, try again later')
 
             res.redirect('/post')
@@ -89,7 +72,6 @@ async function deletePost(req, res) {
         
     }
     catch(error){
-        console.log("Post Deletion Failed, reason: ", error)
         req.flash('failure', 'Cannot delete blog, try again later')
 
         res.redirect('/post')
@@ -103,16 +85,12 @@ async function showBlogEditPage(req, res) {
     try{
 
         const blogIdToDelete = req.params.blogId
-        console.log("Blog Id: ", blogIdToDelete)
 
         const entireBlog = await postModel.findById(blogIdToDelete)
-        console.log("The Entire Blog to be updated--> ", entireBlog)
 
         res.render('editBlogPage', {previousBlog: entireBlog})
 
     }catch(error){
-
-        console.log("Error showing blog edit page, reason: ", error)
 
         req.flash('failure', 'Cannot display blog editing page, try again later')
 
@@ -131,16 +109,12 @@ async function updatePost(req, res) {
         const newData = req.body
         const updatedBlogThumbnail = req.file.filename  // fetching thumbnail name from the file object added to the request object by multer
         newData.thumbnail = updatedBlogThumbnail // adding thumbnail field to the new data
-        console.log("Data to be updated: ", newData)
         const previousData = await postModel.findById(req.params.blogId)
-        console.log("Previous Data...", previousData)
 
         // checking whether current user is the author of the blog or whether the request is made by an admin
         if((previousData.author._id.toString() === req.session.user.userId) || (req.session.user.role === 'admin')) {
 
             const updatedData = await postModel.findByIdAndUpdate(req.params.blogId, newData, {new: true})
-            console.log("Data Updated")
-            console.log("Printing Updated Data ", updatedData)
 
             req.flash('success', 'Blog updated successfully')
             
@@ -150,7 +124,6 @@ async function updatePost(req, res) {
 
         } else {
 
-            console.log("Current user id and Blog author id does not match")
             req.flash('info', "Warning: You cannot modify someone else's blog")
 
             res.redirect('/post')
@@ -159,7 +132,6 @@ async function updatePost(req, res) {
 
     }
     catch(error){
-        console.log("Post Updation Failed, reason: ", error)
         req.flash('failure', 'Blog edit failed, try again later')
 
         res.redirect('/post')
@@ -182,17 +154,11 @@ async function likeBlog(req, res) {
 
         if(hasLiked) {
 
-            console.log("This user has already liked this post once.")
-            console.log("Removing user id from likes array")
             const updatedLikeArray = await postModel.findByIdAndUpdate(blogId, {$pull: {likes: currentUserId}}, {new:true} )
-            console.log("User id removed from like array, result: ", updatedLikeArray)
 
         } else {
 
-            console.log("This user is liking this post for the first time.")
-            console.log("Adding user id to likes array.")
             const updatedLikeArray = await postModel.findByIdAndUpdate(blogId, {$addToSet: {likes: currentUserId}}, {new: true})
-            console.log("User id added to like array, result: ", updatedLikeArray)
 
         }
         
@@ -201,7 +167,6 @@ async function likeBlog(req, res) {
 
     }catch(error) {
 
-        console.log("Like functionality failed, reason: ", error)
 
     }
 
@@ -216,12 +181,8 @@ async function addComment(req, res) {
         const blogId = req.params.blogId
         const commentAuthor = req.session.user.userId
 
-        console.log("Comment content: ", commentContent)
-        console.log("Blog id: ", blogId)
-        console.log("Commented by: ", commentAuthor)
 
         const updatedData = await postModel.findByIdAndUpdate(blogId, {$addToSet: {comments: {commentAuthor:commentAuthor, content: commentContent } } }, {new:true})
-        console.log("Updated Data: ", updatedData)
 
         req.flash('success', 'Comment Added')
 
@@ -229,7 +190,6 @@ async function addComment(req, res) {
     }
     catch(error){
 
-        console.log("Cannot create comment, reason: ", error)
         req.flash('failure', 'Cannot upload comment, try again later')
 
         res.redirect('/post')

@@ -26,8 +26,6 @@ async function sendMail() {
         html: 'Your One Time Password (<b>OTP</b>) for creating an account is <b>123456</b>. Your code is valid for 5 minutes and <b>do not share it<b> with anyone else.'
     })
 
-    console.log("Mail Send to Mailtrap SMTP Server ✅")
-    console.log("Message ID: ", info.messageId)
 }
 
 sendMail();

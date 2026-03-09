@@ -145,7 +145,6 @@
 
         // method to submit the blog delete form
         function submitDeleteForm(blogId){
-            console.log("ID of the blog passed to submitDeleteFrom() method: ", blogId)
             const blogDeleteForm = document.getElementById('blogDeleteForm')
             blogDeleteForm.action = `/post/${blogId}?_method=DELETE` 
             blogDeleteForm.submit()

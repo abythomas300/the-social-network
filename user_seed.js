@@ -25,8 +25,6 @@ async function user_seed(){
 
     }catch(error){
 
-        console.log("Error in seeding, reason: ", error)
-
     }
 
 }

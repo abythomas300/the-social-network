@@ -100,15 +100,7 @@ app.post('/logout', authController.logoutUser) // handling '/localhost:<port>/lo
 
 // connecting to database
 mongoose.connect(db_URI)
-    .then(function () {
-        console.log("Connected to Database Successfully")
-    })
-    .catch(function (error) {
-        console.log("Database Connection Failed, reason: ", error)
-    })
 
 
 // starting server
-app.listen(port, function () {
-    console.log(`Server is running at http://localhost:${port}/`)
-})
+app.listen(port)
