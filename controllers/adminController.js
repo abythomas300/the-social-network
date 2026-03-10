@@ -39,9 +39,8 @@ async function displayAllBlogs(req, res) {
 async function displayUsersList(req, res) {
 
     try{
-
-        const allUsers = await userModel.find({})
-
+``
+        const allUsers = await userModel.find({}).select('-password -otp -otpGeneratedAt -__v')
         const data = {
             users: allUsers
         }

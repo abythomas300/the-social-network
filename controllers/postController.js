@@ -1,6 +1,4 @@
-// importing necessary modules
 const postModel = require('../models/post')
-const mongoose = require('mongoose')
 
 
 async function getAllPosts(req, res){
