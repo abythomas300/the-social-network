@@ -74,7 +74,7 @@ async function deleteComment(req, res) {
         try{
             const blogId = req.params.blogId
             const commentIdToDelete = req.body.commentId
-            const deletedComment = await postModel.findOneAndUpdate({_id: blogId}, {$pull: {comments: {_id: commentIdToDelete}}}, {new: true})
+            await postModel.findOneAndUpdate({_id: blogId}, {$pull: {comments: {_id: commentIdToDelete}}})
             req.flash('success', 'Comment deleted')
             res.redirect('/admin/blogInfo')
         }
@@ -94,7 +94,7 @@ async function deleteUser(req, res) {
 
     try{
 
-        const deletedUser = await userModel.findOneAndDelete({username: req.body.username})
+        await userModel.findOneAndDelete({username: req.body.username})
 
         // creating a flash message
         req.flash('success', 'User deleted successfully')
@@ -116,7 +116,7 @@ async function restrictUser(req, res) {
 
     if(userDetails.isRestricted === false) {
 
-        const updatedDocument = await userModel.findOneAndUpdate({username: req.body.username}, {$set: {isRestricted: true} }, {new: true})
+        await userModel.findOneAndUpdate({username: req.body.username}, {$set: {isRestricted: true} })
 
         req.flash('success', 'User has been restricted')
 
@@ -124,7 +124,7 @@ async function restrictUser(req, res) {
 
     } else {
 
-        const updatedDocument = await userModel.findOneAndUpdate({username: req.body.username}, {$set: {isRestricted: false} }, {new: true})
+        await userModel.findOneAndUpdate({username: req.body.username}, {$set: {isRestricted: false} })
 
 
         req.flash('success', 'User restriction removed has been removed')

@@ -96,7 +96,7 @@ async function otpCheck(req, res) {
             if(isMatch) {
 
                 // setting the verified field to 'true'
-                const modifiedUserDocument = await userModel.findByIdAndUpdate(userDetails._id, {$set: {isVerified: true}}, {new: true})
+                await userModel.findByIdAndUpdate(userDetails._id, {$set: {isVerified: true}})
 
                 // creating flash message
                 req.flash('success', 'Registraion Successful.')

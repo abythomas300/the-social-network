@@ -154,11 +154,11 @@ async function likeBlog(req, res) {
 
         if(hasLiked) {
 
-            const updatedLikeArray = await postModel.findByIdAndUpdate(blogId, {$pull: {likes: currentUserId}}, {new:true} )
+            await postModel.findByIdAndUpdate(blogId, {$pull: {likes: currentUserId}})
 
         } else {
 
-            const updatedLikeArray = await postModel.findByIdAndUpdate(blogId, {$addToSet: {likes: currentUserId}}, {new: true})
+            await postModel.findByIdAndUpdate(blogId, {$addToSet: {likes: currentUserId}})
 
         }
         
@@ -182,7 +182,7 @@ async function addComment(req, res) {
         const commentAuthor = req.session.user.userId
 
 
-        const updatedData = await postModel.findByIdAndUpdate(blogId, {$addToSet: {comments: {commentAuthor:commentAuthor, content: commentContent } } }, {new:true})
+       await postModel.findByIdAndUpdate(blogId, {$addToSet: {comments: {commentAuthor:commentAuthor, content: commentContent } } })
 
         req.flash('success', 'Comment Added')
 
