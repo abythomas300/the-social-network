@@ -253,7 +253,7 @@
                                     <div class="metadata-content d-flex">
                                       <%// checking whether user exists%>
                                       <%if(comment.commentAuthor) {%>
-                                        <img src="https://avatar.iran.liara.run/username?username=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
+                                        <img src="https://api.dicebear.com/9.x/thumbs/svg?seed=<%=comment.commentAuthor.username%>" class="rounded-circle" width="40" height="40">
                                         <span class="fw-bold mx-2"><%=comment.commentAuthor.username%></span><span class="text-muted"><%=dateConversion(comment.createdAt)%> at <%=extractTime(comment.createdAt)%> </span>
                                       <%} else {%>
                                         <img src="/images/no_profile_picture_placeholder.png" class="rounded-circle" width="40" height="40">
