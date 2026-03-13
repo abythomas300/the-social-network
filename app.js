@@ -9,7 +9,7 @@ const methodOverride = require('method-override')
 const path = require('path')
 const helmet = require('helmet')
 const crypto = require('crypto')
-
+const logger = require('./utils/logger')
 
 // importing routes
 const postRouter = require('./routes/postRoutes')
@@ -96,11 +96,14 @@ app.get('/login', homeController.loginPage)  // handling '/localhost:<post>/logi
 app.post('/login', authController.loginUser) // handling '/localhost:<port>/login' POST request
 app.post('/logout', authController.logoutUser) // handling '/localhost:<port>/logout' POST request
 
-
-
 // connecting to database
-mongoose.connect(db_URI)
+const connectToDB = async ()=>{
+    await mongoose.connect(db_URI)
+    logger.info('database connected - info') // test
+    logger.error('database connected - error') // test
+}
 
+connectToDB()
 
 // starting server
 app.listen(port)
